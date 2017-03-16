@@ -548,7 +548,7 @@ static int parse_force_date(const char *in, struct strbuf *out)
 
 	if (parse_date(in, out) < 0) {
 		int errors = 0;
-		unsigned long t = approxidate_careful(in, &errors);
+		size_t t = approxidate_careful(in, &errors);
 		if (errors)
 			return -1;
 		strbuf_addf(out, "%lu", t);

@@ -733,7 +733,7 @@ static int git_parse_int64(const char *value, int64_t *ret)
 	return 1;
 }
 
-int git_parse_ulong(const char *value, unsigned long *ret)
+int git_parse_ulong(const char *value, size_t *ret)
 {
 	uintmax_t tmp;
 	if (!git_parse_unsigned(value, &tmp, maximum_unsigned_value_of_type(long)))
@@ -792,9 +792,9 @@ int64_t git_config_int64(const char *name, const char *value)
 	return ret;
 }
 
-unsigned long git_config_ulong(const char *name, const char *value)
+size_t git_config_ulong(const char *name, const char *value)
 {
-	unsigned long ret;
+	size_t ret;
 	if (!git_parse_ulong(value, &ret))
 		die_bad_number(name, value);
 	return ret;
@@ -1339,7 +1339,7 @@ int git_config_from_blob_sha1(config_fn_t fn,
 {
 	enum object_type type;
 	char *buf;
-	unsigned long size;
+	size_t size;
 	int ret;
 
 	buf = read_sha1_file(sha1, &type, &size);
@@ -1389,7 +1389,7 @@ int git_env_bool(const char *k, int def)
  * Parse environment variable 'k' as ulong with possibly a unit
  * suffix; if missing, use the default value 'val'.
  */
-unsigned long git_env_ulong(const char *k, unsigned long val)
+size_t git_env_ulong(const char *k, unsigned long val)
 {
 	const char *v = getenv(k);
 	if (v && !git_parse_ulong(v, &val))
@@ -1668,7 +1668,7 @@ int git_configset_get_int(struct config_set *cs, const char *key, int *dest)
 		return 1;
 }
 
-int git_configset_get_ulong(struct config_set *cs, const char *key, unsigned long *dest)
+int git_configset_get_ulong(struct config_set *cs, const char *key, size_t *dest)
 {
 	const char *value;
 	if (!git_configset_get_value(cs, key, &value)) {
@@ -1769,7 +1769,7 @@ int git_config_get_int(const char *key, int *dest)
 	return git_configset_get_int(&the_config_set, key, dest);
 }
 
-int git_config_get_ulong(const char *key, unsigned long *dest)
+int git_config_get_ulong(const char *key, size_t *dest)
 {
 	git_config_check_init();
 	return git_configset_get_ulong(&the_config_set, key, dest);

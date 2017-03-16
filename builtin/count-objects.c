@@ -10,10 +10,10 @@
 #include "parse-options.h"
 #include "quote.h"
 
-static unsigned long garbage;
+static size_t garbage;
 static off_t size_garbage;
 static int verbose;
-static unsigned long loose, packed, packed_loose;
+static size_t loose, packed, packed_loose;
 static off_t loose_size;
 
 static const char *bits_to_msg(unsigned seen_bits)
@@ -113,7 +113,7 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 
 	if (verbose) {
 		struct packed_git *p;
-		unsigned long num_pack = 0;
+		size_t num_pack = 0;
 		off_t size_pack = 0;
 		struct strbuf loose_buf = STRBUF_INIT;
 		struct strbuf pack_buf = STRBUF_INIT;
@@ -136,11 +136,11 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 			strbuf_humanise_bytes(&garbage_buf, size_garbage);
 		} else {
 			strbuf_addf(&loose_buf, "%lu",
-				    (unsigned long)(loose_size / 1024));
+				    (size_t)(loose_size / 1024));
 			strbuf_addf(&pack_buf, "%lu",
-				    (unsigned long)(size_pack / 1024));
+				    (size_t)(size_pack / 1024));
 			strbuf_addf(&garbage_buf, "%lu",
-				    (unsigned long)(size_garbage / 1024));
+				    (size_t)(size_garbage / 1024));
 		}
 
 		printf("count: %lu\n", loose);
@@ -161,7 +161,7 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 			strbuf_humanise_bytes(&buf, loose_size);
 		else
 			strbuf_addf(&buf, "%lu kilobytes",
-				    (unsigned long)(loose_size / 1024));
+				    (size_t)(loose_size / 1024));
 		printf("%lu objects, %s\n", loose, buf.buf);
 		strbuf_release(&buf);
 	}

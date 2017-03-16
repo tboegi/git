@@ -49,7 +49,7 @@ void resolve_undo_write(struct strbuf *sb, struct string_list *resolve_undo)
 	}
 }
 
-struct string_list *resolve_undo_read(const char *data, unsigned long size)
+struct string_list *resolve_undo_read(const char *data, size_t size)
 {
 	struct string_list *resolve_undo;
 	size_t len;

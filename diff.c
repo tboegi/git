@@ -408,7 +408,7 @@ static struct diff_tempfile {
 	struct tempfile tempfile;
 } diff_temp[2];
 
-typedef unsigned long (*sane_truncate_fn)(char *line, unsigned long len);
+typedef size_t (*sane_truncate_fn)(char *line, unsigned long len);
 
 struct emit_callback {
 	int color_diff;
@@ -463,7 +463,7 @@ static int fill_mmfile(mmfile_t *mf, struct diff_filespec *one)
 }
 
 /* like fill_mmfile, but only for size, so we can avoid retrieving blob */
-static unsigned long diff_filespec_size(struct diff_filespec *one)
+static size_t diff_filespec_size(struct diff_filespec *one)
 {
 	if (!DIFF_FILE_VALID(one))
 		return 0;
@@ -834,7 +834,7 @@ struct diff_words_buffer {
 	int orig_nr, orig_alloc;
 };
 
-static void diff_words_append(char *line, unsigned long len,
+static void diff_words_append(char *line, size_t len,
 		struct diff_words_buffer *buffer)
 {
 	ALLOC_GROW(buffer->text.ptr, buffer->text.size + len, buffer->alloc);
@@ -951,7 +951,7 @@ static int color_words_output_graph_prefix(struct diff_words_data *diff_words)
 	}
 }
 
-static void fn_out_diff_words_aux(void *priv, char *line, unsigned long len)
+static void fn_out_diff_words_aux(void *priv, char *line, size_t len)
 {
 	struct diff_words_data *diff_words = priv;
 	struct diff_words_style *style = diff_words->style;
@@ -1240,10 +1240,10 @@ const char *diff_line_prefix(struct diff_options *opt)
 	return msgbuf->buf;
 }
 
-static unsigned long sane_truncate_line(struct emit_callback *ecb, char *line, unsigned long len)
+static size_t sane_truncate_line(struct emit_callback *ecb, char *line, unsigned long len)
 {
 	const char *cp;
-	unsigned long allot;
+	size_t allot;
 	size_t l = len;
 
 	if (ecb->truncate)
@@ -1273,7 +1273,7 @@ static void find_lno(const char *line, struct emit_callback *ecbdata)
 	ecbdata->lno_in_postimage = strtol(p + 1, NULL, 10);
 }
 
-static void fn_out_consume(void *priv, char *line, unsigned long len)
+static void fn_out_consume(void *priv, char *line, size_t len)
 {
 	struct emit_callback *ecbdata = priv;
 	const char *meta = diff_get_color(ecbdata->color_diff, DIFF_METAINFO);
@@ -1495,7 +1495,7 @@ static struct diffstat_file *diffstat_add(struct diffstat_t *diffstat,
 	return x;
 }
 
-static void diffstat_consume(void *priv, char *line, unsigned long len)
+static void diffstat_consume(void *priv, char *line, size_t len)
 {
 	struct diffstat_t *diffstat = priv;
 	struct diffstat_file *x = diffstat->files[diffstat->nr - 1];
@@ -1903,7 +1903,7 @@ static void show_numstat(struct diffstat_t *data, struct diff_options *options)
 
 struct dirstat_file {
 	const char *name;
-	unsigned long changed;
+	size_t changed;
 };
 
 struct dirstat_dir {
@@ -1912,16 +1912,16 @@ struct dirstat_dir {
 };
 
 static long gather_dirstat(struct diff_options *opt, struct dirstat_dir *dir,
-		unsigned long changed, const char *base, int baselen)
+		size_t changed, const char *base, int baselen)
 {
-	unsigned long this_dir = 0;
+	size_t this_dir = 0;
 	unsigned int sources = 0;
 	const char *line_prefix = diff_line_prefix(opt);
 
 	while (dir->nr) {
 		struct dirstat_file *f = dir->files;
 		int namelen = strlen(f->name);
-		unsigned long this;
+		size_t this;
 		char *slash;
 
 		if (namelen < baselen)
@@ -1972,7 +1972,7 @@ static int dirstat_compare(const void *_a, const void *_b)
 static void show_dirstat(struct diff_options *options)
 {
 	int i;
-	unsigned long changed;
+	size_t changed;
 	struct dirstat_dir dir;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
@@ -1986,7 +1986,7 @@ static void show_dirstat(struct diff_options *options)
 	for (i = 0; i < q->nr; i++) {
 		struct diff_filepair *p = q->queue[i];
 		const char *name;
-		unsigned long copied, added, damage;
+		size_t copied, added, damage;
 		int content_changed;
 
 		name = p->two->path ? p->two->path : p->one->path;
@@ -2071,7 +2071,7 @@ found_damage:
 static void show_dirstat_by_line(struct diffstat_t *data, struct diff_options *options)
 {
 	int i;
-	unsigned long changed;
+	size_t changed;
 	struct dirstat_dir dir;
 
 	if (data->nr == 0)
@@ -2086,7 +2086,7 @@ static void show_dirstat_by_line(struct diffstat_t *data, struct diff_options *o
 	changed = 0;
 	for (i = 0; i < data->nr; i++) {
 		struct diffstat_file *file = data->files[i];
-		unsigned long damage = file->added + file->deleted;
+		size_t damage = file->added + file->deleted;
 		if (file->is_binary)
 			/*
 			 * binary files counts bytes, not lines. Must find some
@@ -2135,7 +2135,7 @@ struct checkdiff_t {
 	unsigned status;
 };
 
-static int is_conflict_marker(const char *line, int marker_size, unsigned long len)
+static int is_conflict_marker(const char *line, int marker_size, size_t len)
 {
 	char firstchar;
 	int cnt;
@@ -2158,7 +2158,7 @@ static int is_conflict_marker(const char *line, int marker_size, unsigned long l
 	return 1;
 }
 
-static void checkdiff_consume(void *priv, char *line, unsigned long len)
+static void checkdiff_consume(void *priv, char *line, size_t len)
 {
 	struct checkdiff_t *data = priv;
 	int marker_size = data->conflict_marker_size;
@@ -2203,8 +2203,8 @@ static void checkdiff_consume(void *priv, char *line, unsigned long len)
 }
 
 static unsigned char *deflate_it(char *data,
-				 unsigned long size,
-				 unsigned long *result_size)
+				 size_t size,
+				 size_t *result_size)
 {
 	int bound;
 	unsigned char *deflated;
@@ -2232,10 +2232,10 @@ static void emit_binary_diff_body(FILE *file, mmfile_t *one, mmfile_t *two,
 	void *delta;
 	void *deflated;
 	void *data;
-	unsigned long orig_size;
-	unsigned long delta_size;
-	unsigned long deflate_size;
-	unsigned long data_size;
+	size_t orig_size;
+	size_t delta_size;
+	size_t deflate_size;
+	size_t data_size;
 
 	/* We could do deflated delta, or we could do just deflated two,
 	 * whichever is smaller.
@@ -2957,7 +2957,7 @@ void diff_free_filespec_data(struct diff_filespec *s)
 
 static void prep_temp_blob(const char *path, struct diff_tempfile *temp,
 			   void *blob,
-			   unsigned long size,
+			   size_t size,
 			   const struct object_id *oid,
 			   int mode)
 {
@@ -4086,7 +4086,7 @@ int diff_opt_parse(struct diff_options *options,
 
 int parse_rename_score(const char **cp_p)
 {
-	unsigned long num, scale;
+	size_t num, scale;
 	int ch, dot;
 	const char *cp = *cp_p;
 
@@ -4555,7 +4555,7 @@ static int remove_space(char *line, int len)
 	return dst - line;
 }
 
-static void patch_id_consume(void *priv, char *line, unsigned long len)
+static void patch_id_consume(void *priv, char *line, size_t len)
 {
 	struct patch_id_t *data = priv;
 	int new_len;

@@ -469,7 +469,7 @@ static int show_blob_object(const struct object_id *oid, struct rev_info *rev, c
 	struct object_id oidc;
 	struct object_context obj_context;
 	char *buf;
-	unsigned long size;
+	size_t size;
 
 	fflush(rev->diffopt.file);
 	if (!DIFF_OPT_TOUCHED(&rev->diffopt, ALLOW_TEXTCONV) ||
@@ -491,7 +491,7 @@ static int show_blob_object(const struct object_id *oid, struct rev_info *rev, c
 
 static int show_tag_object(const struct object_id *oid, struct rev_info *rev)
 {
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	char *buf = read_sha1_file(oid->hash, &type, &size);
 	int offset = 0;
@@ -904,7 +904,7 @@ static void gen_message_id(struct rev_info *info, char *base)
 {
 	struct strbuf buf = STRBUF_INIT;
 	strbuf_addf(&buf, "%s.%lu.git.%s", base,
-		    (unsigned long) time(NULL),
+		    (size_t) time(NULL),
 		    git_committer_info(IDENT_NO_NAME|IDENT_NO_DATE|IDENT_STRICT));
 	info->message_id = strbuf_detach(&buf, NULL);
 }

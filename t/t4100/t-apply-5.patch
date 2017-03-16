@@ -323,7 +323,7 @@ diff a/rpush.c b/rpush.c
 -	ssize_t size;
 -	int posn = 0;
 -	char sha1[20];
--	unsigned long objsize;
+-	size_t objsize;
 -	void *buf;
 -	signed char remote;
 -	do {
@@ -518,7 +518,7 @@ diff a/ssh-push.c b/ssh-push.c
 +	ssize_t size;
 +	int posn = 0;
 +	char sha1[20];
-+	unsigned long objsize;
++	size_t objsize;
 +	void *buf;
 +	signed char remote;
 +	do {

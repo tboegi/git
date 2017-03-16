@@ -180,7 +180,7 @@ struct object *lookup_unknown_object(const unsigned char *sha1)
 	return obj;
 }
 
-struct object *parse_object_buffer(const unsigned char *sha1, enum object_type type, unsigned long size, void *buffer, int *eaten_p)
+struct object *parse_object_buffer(const unsigned char *sha1, enum object_type type, size_t size, void *buffer, int *eaten_p)
 {
 	struct object *obj;
 	*eaten_p = 0;
@@ -242,7 +242,7 @@ struct object *parse_object_or_die(const unsigned char *sha1,
 
 struct object *parse_object(const unsigned char *sha1)
 {
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	int eaten;
 	const unsigned char *repl = lookup_replace_object(sha1);

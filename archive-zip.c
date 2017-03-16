@@ -168,12 +168,12 @@ static void copy_le16_clamp(unsigned char *dest, uint64_t n, int *clamped)
 	copy_le16(dest, clamp_max(n, 0xffff, clamped));
 }
 
-static void *zlib_deflate_raw(void *data, unsigned long size,
+static void *zlib_deflate_raw(void *data, size_t size,
 			      int compression_level,
-			      unsigned long *compressed_size)
+			      size_t *compressed_size)
 {
 	git_zstream stream;
-	unsigned long maxsize;
+	size_t maxsize;
 	void *buffer;
 	int result;
 
@@ -201,9 +201,9 @@ static void *zlib_deflate_raw(void *data, unsigned long size,
 	return buffer;
 }
 
-static void write_zip_data_desc(unsigned long size,
-				unsigned long compressed_size,
-				unsigned long crc)
+static void write_zip_data_desc(size_t size,
+				size_t compressed_size,
+				size_t crc)
 {
 	struct zip_data_desc trailer;
 
@@ -215,9 +215,9 @@ static void write_zip_data_desc(unsigned long size,
 }
 
 static void set_zip_dir_data_desc(struct zip_dir_header *header,
-				  unsigned long size,
-				  unsigned long compressed_size,
-				  unsigned long crc)
+				  size_t size,
+				  size_t compressed_size,
+				  size_t crc)
 {
 	copy_le32(header->crc32, crc);
 	copy_le32(header->compressed_size, compressed_size);
@@ -225,9 +225,9 @@ static void set_zip_dir_data_desc(struct zip_dir_header *header,
 }
 
 static void set_zip_header_data_desc(struct zip_local_header *header,
-				     unsigned long size,
-				     unsigned long compressed_size,
-				     unsigned long crc)
+				     size_t size,
+				     size_t compressed_size,
+				     size_t crc)
 {
 	copy_le32(header->crc32, crc);
 	copy_le32(header->compressed_size, compressed_size);
@@ -265,17 +265,17 @@ static int write_zip_entry(struct archiver_args *args,
 	struct zip_local_header header;
 	struct zip_dir_header dirent;
 	struct zip_extra_mtime extra;
-	unsigned long attr2;
-	unsigned long compressed_size;
-	unsigned long crc;
-	unsigned long direntsize;
+	size_t attr2;
+	size_t compressed_size;
+	size_t crc;
+	size_t direntsize;
 	int method;
 	unsigned char *out;
 	void *deflated = NULL;
 	void *buffer;
 	struct git_istream *stream = NULL;
-	unsigned long flags = 0;
-	unsigned long size;
+	size_t flags = 0;
+	size_t size;
 	int is_binary = -1;
 	const char *path_without_prefix = path + args->baselen;
 	unsigned int creator_version = 0;

@@ -511,11 +511,11 @@ static void fill_blob_sha1(struct commit *commit, struct diff_filespec *spec)
 }
 
 static void fill_line_ends(struct diff_filespec *spec, long *lines,
-			   unsigned long **line_ends)
+			   size_t **line_ends)
 {
 	int num = 0, size = 50;
 	long cur = 0;
-	unsigned long *ends = NULL;
+	size_t *ends = NULL;
 	char *data = NULL;
 
 	if (diff_populate_filespec(spec, 0))
@@ -541,7 +541,7 @@ static void fill_line_ends(struct diff_filespec *spec, long *lines,
 struct nth_line_cb {
 	struct diff_filespec *spec;
 	long lines;
-	unsigned long *line_ends;
+	size_t *line_ends;
 };
 
 static const char *nth_line(void *data, long line)
@@ -560,7 +560,7 @@ static struct line_log_data *
 parse_lines(struct commit *commit, const char *prefix, struct string_list *args)
 {
 	long lines = 0;
-	unsigned long *ends = NULL;
+	size_t *ends = NULL;
 	struct nth_line_cb cb_data;
 	struct string_list_item *item;
 	struct line_log_data *ranges = NULL;
@@ -830,7 +830,7 @@ static void queue_diffs(struct line_log_data *range,
 	move_diff_queue(queue, &diff_queued_diff);
 }
 
-static char *get_nth_line(long line, unsigned long *ends, void *data)
+static char *get_nth_line(long line, size_t *ends, void *data)
 {
 	if (line == 0)
 		return (char *)data;
@@ -839,7 +839,7 @@ static char *get_nth_line(long line, unsigned long *ends, void *data)
 }
 
 static void print_line(const char *prefix, char first,
-		       long line, unsigned long *ends, void *data,
+		       long line, size_t *ends, void *data,
 		       const char *color, const char *reset, FILE *file)
 {
 	char *begin = get_nth_line(line, ends, data);
@@ -877,7 +877,7 @@ static void dump_diff_hacky_one(struct rev_info *rev, struct line_log_data *rang
 {
 	int i, j = 0;
 	long p_lines, t_lines;
-	unsigned long *p_ends = NULL, *t_ends = NULL;
+	size_t *p_ends = NULL, *t_ends = NULL;
 	struct diff_filepair *pair = range->pair;
 	struct diff_ranges *diff = &range->diff;
 

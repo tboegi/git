@@ -50,7 +50,7 @@ static struct cached_object {
 	unsigned char sha1[20];
 	enum object_type type;
 	void *buf;
-	unsigned long size;
+	size_t size;
 } *cached_objects;
 static int cached_object_nr, cached_object_alloc;
 
@@ -823,8 +823,8 @@ static int check_packed_git_idx(const char *path, struct packed_git *p)
 		 * variable sized table containing 8-byte entries
 		 * for offsets larger than 2^31.
 		 */
-		unsigned long min_size = 8 + 4*256 + nr*(20 + 4 + 4) + 20 + 20;
-		unsigned long max_size = min_size;
+		size_t min_size = 8 + 4*256 + nr*(20 + 4 + 4) + 20 + 20;
+		size_t max_size = min_size;
 		if (nr)
 			max_size += (nr - 1)*8;
 		if (idx_size < min_size || idx_size > max_size) {
@@ -1233,7 +1233,7 @@ static int in_window(struct pack_window *win, off_t offset)
 unsigned char *use_pack(struct packed_git *p,
 		struct pack_window **w_cursor,
 		off_t offset,
-		unsigned long *left)
+		size_t *left)
 {
 	struct pack_window *win = *w_cursor;
 
@@ -1510,9 +1510,9 @@ static int approximate_object_count_valid;
  * all unreachable objects about to be pruned, in which case they're not really
  * interesting as a measure of repo size in the first place.
  */
-unsigned long approximate_object_count(void)
+size_t approximate_object_count(void)
 {
-	static unsigned long count;
+	static size_t count;
 	if (!approximate_object_count_valid) {
 		struct packed_git *p;
 
@@ -1636,7 +1636,7 @@ static const struct packed_git *has_packed_and_bad(const unsigned char *sha1)
  * the streaming interface and rehash it to do the same.
  */
 int check_sha1_signature(const unsigned char *sha1, void *map,
-			 unsigned long size, const char *type)
+			 size_t size, const char *type)
 {
 	unsigned char real_sha1[20];
 	enum object_type obj_type;
@@ -1767,7 +1767,7 @@ static int open_sha1_file(const unsigned char *sha1, const char **path)
  */
 static void *map_sha1_file_1(const char *path,
 			     const unsigned char *sha1,
-			     unsigned long *size)
+			     size_t *size)
 {
 	void *map;
 	int fd;
@@ -1794,17 +1794,17 @@ static void *map_sha1_file_1(const char *path,
 	return map;
 }
 
-void *map_sha1_file(const unsigned char *sha1, unsigned long *size)
+void *map_sha1_file(const unsigned char *sha1, size_t *size)
 {
 	return map_sha1_file_1(NULL, sha1, size);
 }
 
-unsigned long unpack_object_header_buffer(const unsigned char *buf,
-		unsigned long len, enum object_type *type, unsigned long *sizep)
+size_t unpack_object_header_buffer(const unsigned char *buf,
+		size_t len, enum object_type *type, unsigned long *sizep)
 {
 	unsigned shift;
-	unsigned long size, c;
-	unsigned long used = 0;
+	size_t size, c;
+	size_t used = 0;
 
 	c = buf[used++];
 	*type = (c >> 4) & 7;
@@ -1825,8 +1825,8 @@ unsigned long unpack_object_header_buffer(const unsigned char *buf,
 }
 
 static int unpack_sha1_short_header(git_zstream *stream,
-				    unsigned char *map, unsigned long mapsize,
-				    void *buffer, unsigned long bufsiz)
+				    unsigned char *map, size_t mapsize,
+				    void *buffer, size_t bufsiz)
 {
 	/* Get the data stream */
 	memset(stream, 0, sizeof(*stream));
@@ -1840,8 +1840,8 @@ static int unpack_sha1_short_header(git_zstream *stream,
 }
 
 int unpack_sha1_header(git_zstream *stream,
-		       unsigned char *map, unsigned long mapsize,
-		       void *buffer, unsigned long bufsiz)
+		       unsigned char *map, size_t mapsize,
+		       void *buffer, size_t bufsiz)
 {
 	int status = unpack_sha1_short_header(stream, map, mapsize,
 					      buffer, bufsiz);
@@ -1856,8 +1856,8 @@ int unpack_sha1_header(git_zstream *stream,
 }
 
 static int unpack_sha1_header_to_strbuf(git_zstream *stream, unsigned char *map,
-					unsigned long mapsize, void *buffer,
-					unsigned long bufsiz, struct strbuf *header)
+					size_t mapsize, void *buffer,
+					size_t bufsiz, struct strbuf *header)
 {
 	int status;
 
@@ -1891,11 +1891,11 @@ static int unpack_sha1_header_to_strbuf(git_zstream *stream, unsigned char *map,
 	return -1;
 }
 
-static void *unpack_sha1_rest(git_zstream *stream, void *buffer, unsigned long size, const unsigned char *sha1)
+static void *unpack_sha1_rest(git_zstream *stream, void *buffer, size_t size, const unsigned char *sha1)
 {
 	int bytes = strlen(buffer) + 1;
 	unsigned char *buf = xmallocz(size);
-	unsigned long n;
+	size_t n;
 	int status = Z_OK;
 
 	n = stream->total_out - bytes;
@@ -1945,7 +1945,7 @@ static int parse_sha1_header_extended(const char *hdr, struct object_info *oi,
 			       unsigned int flags)
 {
 	const char *type_buf = hdr;
-	unsigned long size;
+	size_t size;
 	int type, type_len = 0;
 
 	/*
@@ -1985,7 +1985,7 @@ static int parse_sha1_header_extended(const char *hdr, struct object_info *oi,
 		return -1;
 	if (size) {
 		for (;;) {
-			unsigned long c = *hdr - '0';
+			size_t c = *hdr - '0';
 			if (c > 9)
 				break;
 			hdr++;
@@ -2002,7 +2002,7 @@ static int parse_sha1_header_extended(const char *hdr, struct object_info *oi,
 	return *hdr ? -1 : type;
 }
 
-int parse_sha1_header(const char *hdr, unsigned long *sizep)
+int parse_sha1_header(const char *hdr, size_t *sizep)
 {
 	struct object_info oi = OBJECT_INFO_INIT;
 
@@ -2010,7 +2010,7 @@ int parse_sha1_header(const char *hdr, unsigned long *sizep)
 	return parse_sha1_header_extended(hdr, &oi, LOOKUP_REPLACE_OBJECT);
 }
 
-static void *unpack_sha1_file(void *map, unsigned long mapsize, enum object_type *type, unsigned long *size, const unsigned char *sha1)
+static void *unpack_sha1_file(void *map, size_t mapsize, enum object_type *type, unsigned long *size, const unsigned char *sha1)
 {
 	int ret;
 	git_zstream stream;
@@ -2023,7 +2023,7 @@ static void *unpack_sha1_file(void *map, unsigned long mapsize, enum object_type
 	return unpack_sha1_rest(&stream, hdr, *size, sha1);
 }
 
-unsigned long get_size_from_delta(struct packed_git *p,
+size_t get_size_from_delta(struct packed_git *p,
 				  struct pack_window **w_curs,
 			          off_t curpos)
 {
@@ -2136,11 +2136,11 @@ static const unsigned char *get_delta_base_sha1(struct packed_git *p,
 int unpack_object_header(struct packed_git *p,
 			 struct pack_window **w_curs,
 			 off_t *curpos,
-			 unsigned long *sizep)
+			 size_t *sizep)
 {
 	unsigned char *base;
-	unsigned long left;
-	unsigned long used;
+	size_t left;
+	size_t used;
 	enum object_type type;
 
 	/* use_pack() assures us we have [base, base + 20) available
@@ -2189,7 +2189,7 @@ static enum object_type packed_to_object_type(struct packed_git *p,
 
 	while (type == OBJ_OFS_DELTA || type == OBJ_REF_DELTA) {
 		off_t base_offset;
-		unsigned long size;
+		size_t size;
 		/* Push the object we're going to leave behind */
 		if (poi_stack_nr >= poi_stack_alloc && poi_stack == small_poi_stack) {
 			poi_stack_alloc = alloc_nr(poi_stack_nr);
@@ -2248,7 +2248,7 @@ int packed_object_info(struct packed_git *p, off_t obj_offset,
 		       struct object_info *oi)
 {
 	struct pack_window *w_curs = NULL;
-	unsigned long size;
+	size_t size;
 	off_t curpos = obj_offset;
 	enum object_type type;
 
@@ -2314,7 +2314,7 @@ out:
 static void *unpack_compressed_entry(struct packed_git *p,
 				    struct pack_window **w_curs,
 				    off_t curpos,
-				    unsigned long size)
+				    size_t size)
 {
 	int st;
 	git_zstream stream;
@@ -2360,7 +2360,7 @@ struct delta_base_cache_entry {
 	struct delta_base_cache_key key;
 	struct list_head lru;
 	void *data;
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 };
 
@@ -2424,7 +2424,7 @@ static void detach_delta_base_cache_entry(struct delta_base_cache_entry *ent)
 }
 
 static void *cache_or_unpack_entry(struct packed_git *p, off_t base_offset,
-	unsigned long *base_size, enum object_type *type)
+	size_t *base_size, enum object_type *type)
 {
 	struct delta_base_cache_entry *ent;
 
@@ -2454,7 +2454,7 @@ void clear_delta_base_cache(void)
 }
 
 static void add_delta_base_cache(struct packed_git *p, off_t base_offset,
-	void *base, unsigned long base_size, enum object_type type)
+	void *base, size_t base_size, enum object_type type)
 {
 	struct delta_base_cache_entry *ent = xmalloc(sizeof(*ent));
 	struct list_head *lru, *tmp;
@@ -2483,7 +2483,7 @@ static void add_delta_base_cache(struct packed_git *p, off_t base_offset,
 }
 
 static void *read_object(const unsigned char *sha1, enum object_type *type,
-			 unsigned long *size);
+			 size_t *size);
 
 static void write_pack_access_log(struct packed_git *p, off_t obj_offset)
 {
@@ -2498,16 +2498,16 @@ int do_check_packed_object_crc;
 struct unpack_entry_stack_ent {
 	off_t obj_offset;
 	off_t curpos;
-	unsigned long size;
+	size_t size;
 };
 
 void *unpack_entry(struct packed_git *p, off_t obj_offset,
-		   enum object_type *final_type, unsigned long *final_size)
+		   enum object_type *final_type, size_t *final_size)
 {
 	struct pack_window *w_curs = NULL;
 	off_t curpos = obj_offset;
 	void *data = NULL;
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	struct unpack_entry_stack_ent small_delta_stack[UNPACK_ENTRY_STACK_PREALLOC];
 	struct unpack_entry_stack_ent *delta_stack = small_delta_stack;
@@ -2607,7 +2607,7 @@ void *unpack_entry(struct packed_git *p, off_t obj_offset,
 		void *delta_data;
 		void *base = data;
 		void *external_base = NULL;
-		unsigned long delta_size, base_size = size;
+		size_t delta_size, base_size = size;
 		int i;
 
 		data = NULL;
@@ -2894,7 +2894,7 @@ static int sha1_loose_object_info(const unsigned char *sha1,
 				  int flags)
 {
 	int status = 0;
-	unsigned long mapsize;
+	size_t mapsize;
 	void *map;
 	git_zstream stream;
 	char hdr[32];
@@ -3017,7 +3017,7 @@ int sha1_object_info_extended(const unsigned char *sha1, struct object_info *oi,
 }
 
 /* returns enum object_type or negative */
-int sha1_object_info(const unsigned char *sha1, unsigned long *sizep)
+int sha1_object_info(const unsigned char *sha1, size_t *sizep)
 {
 	enum object_type type;
 	struct object_info oi = OBJECT_INFO_INIT;
@@ -3030,7 +3030,7 @@ int sha1_object_info(const unsigned char *sha1, unsigned long *sizep)
 }
 
 static void *read_packed_sha1(const unsigned char *sha1,
-			      enum object_type *type, unsigned long *size)
+			      enum object_type *type, size_t *size)
 {
 	struct pack_entry e;
 	void *data;
@@ -3053,7 +3053,7 @@ static void *read_packed_sha1(const unsigned char *sha1,
 	return data;
 }
 
-int pretend_sha1_file(void *buf, unsigned long len, enum object_type type,
+int pretend_sha1_file(void *buf, size_t len, enum object_type type,
 		      unsigned char *sha1)
 {
 	struct cached_object *co;
@@ -3072,9 +3072,9 @@ int pretend_sha1_file(void *buf, unsigned long len, enum object_type type,
 }
 
 static void *read_object(const unsigned char *sha1, enum object_type *type,
-			 unsigned long *size)
+			 size_t *size)
 {
-	unsigned long mapsize;
+	size_t mapsize;
 	void *map, *buf;
 	struct cached_object *co;
 
@@ -3105,7 +3105,7 @@ static void *read_object(const unsigned char *sha1, enum object_type *type,
  */
 void *read_sha1_file_extended(const unsigned char *sha1,
 			      enum object_type *type,
-			      unsigned long *size,
+			      size_t *size,
 			      unsigned flag)
 {
 	void *data;
@@ -3140,12 +3140,12 @@ void *read_sha1_file_extended(const unsigned char *sha1,
 
 void *read_object_with_reference(const unsigned char *sha1,
 				 const char *required_type_name,
-				 unsigned long *size,
+				 size_t *size,
 				 unsigned char *actual_sha1_return)
 {
 	enum object_type type, required_type;
 	void *buffer;
-	unsigned long isize;
+	size_t isize;
 	unsigned char actual_sha1[20];
 
 	required_type = type_from_string(required_type_name);
@@ -3186,7 +3186,7 @@ void *read_object_with_reference(const unsigned char *sha1,
 	}
 }
 
-static void write_sha1_file_prepare(const void *buf, unsigned long len,
+static void write_sha1_file_prepare(const void *buf, size_t len,
                                     const char *type, unsigned char *sha1,
                                     char *hdr, int *hdrlen)
 {
@@ -3252,7 +3252,7 @@ static int write_buffer(int fd, const void *buf, size_t len)
 	return 0;
 }
 
-int hash_sha1_file(const void *buf, unsigned long len, const char *type,
+int hash_sha1_file(const void *buf, size_t len, const char *type,
                    unsigned char *sha1)
 {
 	char hdr[32];
@@ -3316,7 +3316,7 @@ static int create_tmpfile(struct strbuf *tmp, const char *filename)
 }
 
 static int write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen,
-			      const void *buf, unsigned long len, time_t mtime)
+			      const void *buf, size_t len, time_t mtime)
 {
 	int fd, ret;
 	unsigned char compressed[4096];
@@ -3400,7 +3400,7 @@ static int freshen_packed_object(const unsigned char *sha1)
 	return 1;
 }
 
-int write_sha1_file(const void *buf, unsigned long len, const char *type, unsigned char *sha1)
+int write_sha1_file(const void *buf, size_t len, const char *type, unsigned char *sha1)
 {
 	char hdr[32];
 	int hdrlen = sizeof(hdr);
@@ -3414,7 +3414,7 @@ int write_sha1_file(const void *buf, unsigned long len, const char *type, unsign
 	return write_loose_object(sha1, hdr, hdrlen, buf, len, 0);
 }
 
-int hash_sha1_file_literally(const void *buf, unsigned long len, const char *type,
+int hash_sha1_file_literally(const void *buf, size_t len, const char *type,
 			     unsigned char *sha1, unsigned flags)
 {
 	char *header;
@@ -3439,7 +3439,7 @@ cleanup:
 int force_object_loose(const unsigned char *sha1, time_t mtime)
 {
 	void *buf;
-	unsigned long len;
+	size_t len;
 	enum object_type type;
 	char hdr[32];
 	int hdrlen;
@@ -3902,14 +3902,14 @@ int for_each_packed_object(each_packed_object_fn cb, void *data, unsigned flags)
 
 static int check_stream_sha1(git_zstream *stream,
 			     const char *hdr,
-			     unsigned long size,
+			     size_t size,
 			     const char *path,
 			     const unsigned char *expected_sha1)
 {
 	git_SHA_CTX c;
 	unsigned char real_sha1[GIT_SHA1_RAWSZ];
 	unsigned char buf[4096];
-	unsigned long total_read;
+	size_t total_read;
 	int status = Z_OK;
 
 	git_SHA1_Init(&c);
@@ -3960,13 +3960,13 @@ static int check_stream_sha1(git_zstream *stream,
 int read_loose_object(const char *path,
 		      const unsigned char *expected_sha1,
 		      enum object_type *type,
-		      unsigned long *size,
+		      size_t *size,
 		      void **contents)
 {
 	int ret = -1;
 	int fd = -1;
 	void *map = NULL;
-	unsigned long mapsize;
+	size_t mapsize;
 	git_zstream stream;
 	char hdr[32];
 

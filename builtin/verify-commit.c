@@ -18,7 +18,7 @@ static const char * const verify_commit_usage[] = {
 		NULL
 };
 
-static int run_gpg_verify(const unsigned char *sha1, const char *buf, unsigned long size, unsigned flags)
+static int run_gpg_verify(const unsigned char *sha1, const char *buf, size_t size, unsigned flags)
 {
 	struct signature_check signature_check;
 	int ret;
@@ -37,7 +37,7 @@ static int verify_commit(const char *name, unsigned flags)
 	enum object_type type;
 	unsigned char sha1[20];
 	char *buf;
-	unsigned long size;
+	size_t size;
 	int ret;
 
 	if (get_sha1(name, sha1))

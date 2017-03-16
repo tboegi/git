@@ -28,7 +28,7 @@ diff --git a/connect.c b/connect.c
 -	colon = strchr(host, ':');
 -	if (colon) {
 -		char *end;
--		unsigned long n = strtoul(colon+1, &end, 0);
+-		size_t n = strtoul(colon+1, &end, 0);
 -		if (colon[1] && !*end) {
 -			*colon = 0;
 -			port = n;

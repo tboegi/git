@@ -405,7 +405,7 @@ static void add_rfc2047(struct strbuf *sb, const char *line, size_t len,
 const char *show_ident_date(const struct ident_split *ident,
 			    const struct date_mode *mode)
 {
-	unsigned long date = 0;
+	size_t date = 0;
 	long tz = 0;
 
 	if (ident->date_begin && ident->date_end)
@@ -1107,7 +1107,7 @@ static size_t format_commit_one(struct strbuf *sb, /* in UTF-8 */
 		return 3;
 	case 'w':
 		if (placeholder[1] == '(') {
-			unsigned long width = 0, indent1 = 0, indent2 = 0;
+			size_t width = 0, indent1 = 0, indent2 = 0;
 			char *next;
 			const char *start = placeholder + 2;
 			const char *end = strchr(start, ')');
@@ -1777,7 +1777,7 @@ void pretty_print_commit(struct pretty_print_context *pp,
 			 const struct commit *commit,
 			 struct strbuf *sb)
 {
-	unsigned long beginning_of_body;
+	size_t beginning_of_body;
 	int indent = 4;
 	const char *msg;
 	const char *reencoded;

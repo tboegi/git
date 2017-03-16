@@ -157,7 +157,7 @@ int textconv_object(const char *path,
 		    const struct object_id *oid,
 		    int oid_valid,
 		    char **buf,
-		    unsigned long *buf_size)
+		    size_t *buf_size)
 {
 	struct diff_filespec *df;
 	struct userdiff_driver *textconv;
@@ -184,7 +184,7 @@ static void fill_origin_blob(struct diff_options *opt,
 {
 	if (!o->file.ptr) {
 		enum object_type type;
-		unsigned long file_size;
+		size_t file_size;
 
 		num_read_blob++;
 		if (DIFF_OPT_TST(opt, ALLOW_TEXTCONV) &&
@@ -396,7 +396,7 @@ struct scoreboard {
 	 * indexed with scoreboard.lineno[blame_entry.lno].
 	 */
 	const char *final_buf;
-	unsigned long final_buf_size;
+	size_t final_buf_size;
 
 	/* linked list of blames */
 	struct blame_entry *ent;
@@ -1570,13 +1570,13 @@ finish:
 struct commit_info {
 	struct strbuf author;
 	struct strbuf author_mail;
-	unsigned long author_time;
+	size_t author_time;
 	struct strbuf author_tz;
 
 	/* filled only when asked for details */
 	struct strbuf committer;
 	struct strbuf committer_mail;
-	unsigned long committer_time;
+	size_t committer_time;
 	struct strbuf committer_tz;
 
 	struct strbuf summary;
@@ -1587,7 +1587,7 @@ struct commit_info {
  */
 static void get_ac_line(const char *inbuf, const char *what,
 	struct strbuf *name, struct strbuf *mail,
-	unsigned long *time, struct strbuf *tz)
+	size_t *time, struct strbuf *tz)
 {
 	struct ident_split ident;
 	size_t len, maillen, namelen;
@@ -1846,7 +1846,7 @@ static void assign_blame(struct scoreboard *sb, int opt)
 	stop_progress(&pi.progress);
 }
 
-static const char *format_time(unsigned long time, const char *tz_str,
+static const char *format_time(size_t time, const char *tz_str,
 			       int show_raw_time)
 {
 	static struct strbuf time_buf = STRBUF_INIT;
@@ -2052,7 +2052,7 @@ static const char *get_next_line(const char *start, const char *end)
 static int prepare_lines(struct scoreboard *sb)
 {
 	const char *buf = sb->final_buf;
-	unsigned long len = sb->final_buf_size;
+	size_t len = sb->final_buf_size;
 	const char *end = buf + len;
 	const char *p;
 	int *lineno;
@@ -2189,7 +2189,7 @@ static void sanity_check_refcnt(struct scoreboard *sb)
 static unsigned parse_score(const char *arg)
 {
 	char *end;
-	unsigned long score = strtoul(arg, &end, 10);
+	size_t score = strtoul(arg, &end, 10);
 	if (*end)
 		return 0;
 	return score;
@@ -2356,7 +2356,7 @@ static struct commit *fake_working_tree_commit(struct diff_options *opt,
 		struct stat st;
 		const char *read_from;
 		char *buf_ptr;
-		unsigned long buf_len;
+		size_t buf_len;
 
 		if (contents_from) {
 			if (stat(contents_from, &st) < 0)

@@ -687,7 +687,7 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
   declared below.  These must be precisely the same for mallinfo() to
   work.  The original SVID version of this struct, defined on most
   systems with mallinfo, declares all fields as ints. But some others
-  define as unsigned long. If your system defines the fields using a
+  define as size_t. If your system defines the fields using a
   type of different width than listed here, you MUST #include your
   system version and #define HAVE_USR_INCLUDE_MALLOC_H.
 */
@@ -1420,8 +1420,8 @@ LONG __cdecl _InterlockedExchange(LONG volatile *Target, LONG Value);
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-unsigned char _BitScanForward(unsigned long *index, unsigned long mask);
-unsigned char _BitScanReverse(unsigned long *index, unsigned long mask);
+unsigned char _BitScanForward(size_t *index, unsigned long mask);
+unsigned char _BitScanReverse(size_t *index, unsigned long mask);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -3460,9 +3460,9 @@ static void internal_malloc_stats(mstate m) {
       }
     }
 
-    fprintf(stderr, "max system bytes = %10lu\n", (unsigned long)(maxfp));
-    fprintf(stderr, "system bytes     = %10lu\n", (unsigned long)(fp));
-    fprintf(stderr, "in use bytes     = %10lu\n", (unsigned long)(used));
+    fprintf(stderr, "max system bytes = %10lu\n", (size_t)(maxfp));
+    fprintf(stderr, "system bytes     = %10lu\n", (size_t)(fp));
+    fprintf(stderr, "in use bytes     = %10lu\n", (size_t)(used));
 
     POSTACTION(m);
   }

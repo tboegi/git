@@ -38,10 +38,10 @@ typedef unsigned short  uint16_t;
 typedef int  int32_t;
 typedef unsigned   uint32_t;
 typedef long long  int64_t;
-typedef unsigned long long   uint64_t;
+typedef size_t long   uint64_t;
 
 typedef long long  intmax_t;
-typedef unsigned long long uintmax_t;
+typedef size_t long uintmax_t;
 
 typedef int64_t off64_t;
 

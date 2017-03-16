@@ -30,7 +30,7 @@ struct add_opts {
 
 static int show_only;
 static int verbose;
-static unsigned long expire;
+static size_t expire;
 
 static int prune_worktree(const char *id, struct strbuf *reason)
 {

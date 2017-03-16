@@ -166,12 +166,12 @@ int diffcore_count_changes(struct diff_filespec *src,
 			   struct diff_filespec *dst,
 			   void **src_count_p,
 			   void **dst_count_p,
-			   unsigned long *src_copied,
-			   unsigned long *literal_added)
+			   size_t *src_copied,
+			   size_t *literal_added)
 {
 	struct spanhash *s, *d;
 	struct spanhash_top *src_count, *dst_count;
-	unsigned long sc, la;
+	size_t sc, la;
 
 	src_count = dst_count = NULL;
 	if (src_count_p)

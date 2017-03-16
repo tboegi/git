@@ -67,10 +67,10 @@ static void *do_xmalloc(size_t size, int gentle)
 		if (!ret) {
 			if (!gentle)
 				die("Out of memory, malloc failed (tried to allocate %lu bytes)",
-				    (unsigned long)size);
+				    (size_t)size);
 			else {
 				error("Out of memory, malloc failed (tried to allocate %lu bytes)",
-				      (unsigned long)size);
+				      (size_t)size);
 				return NULL;
 			}
 		}

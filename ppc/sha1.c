@@ -25,9 +25,9 @@ int ppc_SHA1_Init(ppc_SHA_CTX *c)
 	return 0;
 }
 
-int ppc_SHA1_Update(ppc_SHA_CTX *c, const void *ptr, unsigned long n)
+int ppc_SHA1_Update(ppc_SHA_CTX *c, const void *ptr, size_t n)
 {
-	unsigned long nb;
+	size_t nb;
 	const unsigned char *p = ptr;
 
 	c->len += (uint64_t) n << 3;

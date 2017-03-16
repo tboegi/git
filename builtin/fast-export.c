@@ -203,7 +203,7 @@ static void show_progress(void)
  * There's no need to cache this result with anonymize_mem, since
  * we already handle blob content caching with marks.
  */
-static char *anonymize_blob(unsigned long *size)
+static char *anonymize_blob(size_t *size)
 {
 	static int counter;
 	struct strbuf out = STRBUF_INIT;
@@ -214,7 +214,7 @@ static char *anonymize_blob(unsigned long *size)
 
 static void export_blob(const unsigned char *sha1)
 {
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	char *buf;
 	struct object *object;
@@ -642,7 +642,7 @@ static void handle_tail(struct object_array *commits, struct rev_info *revs)
 
 static void handle_tag(const char *name, struct tag *tag)
 {
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	char *buf;
 	const char *tagger, *tagger_end, *message;

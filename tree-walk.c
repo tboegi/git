@@ -22,7 +22,7 @@ static const char *get_mode(const char *str, unsigned int *modep)
 	return str;
 }
 
-static int decode_tree_entry(struct tree_desc *desc, const char *buf, unsigned long size, struct strbuf *err)
+static int decode_tree_entry(struct tree_desc *desc, const char *buf, size_t size, struct strbuf *err)
 {
 	const char *path;
 	unsigned int mode, len;
@@ -51,7 +51,7 @@ static int decode_tree_entry(struct tree_desc *desc, const char *buf, unsigned l
 	return 0;
 }
 
-static int init_tree_desc_internal(struct tree_desc *desc, const void *buffer, unsigned long size, struct strbuf *err)
+static int init_tree_desc_internal(struct tree_desc *desc, const void *buffer, size_t size, struct strbuf *err)
 {
 	desc->buffer = buffer;
 	desc->size = size;
@@ -60,7 +60,7 @@ static int init_tree_desc_internal(struct tree_desc *desc, const void *buffer, u
 	return 0;
 }
 
-void init_tree_desc(struct tree_desc *desc, const void *buffer, unsigned long size)
+void init_tree_desc(struct tree_desc *desc, const void *buffer, size_t size)
 {
 	struct strbuf err = STRBUF_INIT;
 	if (init_tree_desc_internal(desc, buffer, size, &err))
@@ -68,7 +68,7 @@ void init_tree_desc(struct tree_desc *desc, const void *buffer, unsigned long si
 	strbuf_release(&err);
 }
 
-int init_tree_desc_gently(struct tree_desc *desc, const void *buffer, unsigned long size)
+int init_tree_desc_gently(struct tree_desc *desc, const void *buffer, size_t size)
 {
 	struct strbuf err = STRBUF_INIT;
 	int result = init_tree_desc_internal(desc, buffer, size, &err);
@@ -80,7 +80,7 @@ int init_tree_desc_gently(struct tree_desc *desc, const void *buffer, unsigned l
 
 void *fill_tree_descriptor(struct tree_desc *desc, const unsigned char *sha1)
 {
-	unsigned long size = 0;
+	size_t size = 0;
 	void *buf = NULL;
 
 	if (sha1) {
@@ -106,8 +106,8 @@ static int update_tree_entry_internal(struct tree_desc *desc, struct strbuf *err
 {
 	const void *buf = desc->buffer;
 	const unsigned char *end = desc->entry.oid->hash + 20;
-	unsigned long size = desc->size;
-	unsigned long len = end - (const unsigned char *)buf;
+	size_t size = desc->size;
+	size_t len = end - (const unsigned char *)buf;
 
 	if (size < len)
 		die(_("too-short tree file"));
@@ -400,7 +400,7 @@ int traverse_trees(int n, struct tree_desc *t, struct traverse_info *info)
 	info->traverse_path = traverse_path;
 	for (;;) {
 		int trees_used;
-		unsigned long mask, dirmask;
+		size_t mask, dirmask;
 		const char *first = NULL;
 		int first_len = 0;
 		struct name_entry *e = NULL;
@@ -487,7 +487,7 @@ int traverse_trees(int n, struct tree_desc *t, struct traverse_info *info)
 
 struct dir_state {
 	void *tree;
-	unsigned long size;
+	size_t size;
 	unsigned char sha1[20];
 };
 
@@ -530,7 +530,7 @@ int get_tree_entry(const unsigned char *tree_sha1, const char *name, unsigned ch
 {
 	int retval;
 	void *tree;
-	unsigned long size;
+	size_t size;
 	unsigned char root[20];
 
 	tree = read_object_with_reference(tree_sha1, tree_type, &size, root);
@@ -601,7 +601,7 @@ enum follow_symlinks_result get_tree_entry_follow_symlinks(unsigned char *tree_s
 		if (!t.buffer) {
 			void *tree;
 			unsigned char root[20];
-			unsigned long size;
+			size_t size;
 			tree = read_object_with_reference(current_tree_sha1,
 							  tree_type, &size,
 							  root);
@@ -697,7 +697,7 @@ enum follow_symlinks_result get_tree_entry_follow_symlinks(unsigned char *tree_s
 			goto done;
 		} else if (S_ISLNK(*mode)) {
 			/* Follow a symlink */
-			unsigned long link_len;
+			size_t link_len;
 			size_t len;
 			char *contents, *contents_start;
 			struct dir_state *parent;

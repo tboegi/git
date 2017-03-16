@@ -19,7 +19,7 @@ static struct strbuf url = STRBUF_INIT;
 
 struct options {
 	int verbosity;
-	unsigned long depth;
+	size_t depth;
 	char *deepen_since;
 	struct string_list deepen_not;
 	unsigned progress : 1,
@@ -57,7 +57,7 @@ static int set_option(const char *name, const char *value)
 	}
 	else if (!strcmp(name, "depth")) {
 		char *end;
-		unsigned long v = strtoul(value, &end, 10);
+		size_t v = strtoul(value, &end, 10);
 		if (value == end || *end)
 			return -1;
 		options.depth = v;
@@ -646,7 +646,7 @@ retry:
 		if (options.verbosity > 1) {
 			fprintf(stderr, "POST %s (gzip %lu to %lu bytes)\n",
 				rpc->service_name,
-				(unsigned long)rpc->len, (unsigned long)gzip_size);
+				(size_t)rpc->len, (unsigned long)gzip_size);
 			fflush(stderr);
 		}
 	} else {
@@ -657,7 +657,7 @@ retry:
 		curl_easy_setopt(slot->curl, CURLOPT_POSTFIELDSIZE, rpc->len);
 		if (options.verbosity > 1) {
 			fprintf(stderr, "POST %s (%lu bytes)\n",
-				rpc->service_name, (unsigned long)rpc->len);
+				rpc->service_name, (size_t)rpc->len);
 			fflush(stderr);
 		}
 	}

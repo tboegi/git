@@ -385,7 +385,7 @@ static int create_graft(int argc, const char **argv, int force)
 	struct commit *commit;
 	struct strbuf buf = STRBUF_INIT;
 	const char *buffer;
-	unsigned long size;
+	size_t size;
 
 	if (get_sha1(old_ref, old) < 0)
 		die(_("Not a valid object name: '%s'"), old_ref);

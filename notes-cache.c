@@ -73,7 +73,7 @@ char *notes_cache_get(struct notes_cache *c, unsigned char key_sha1[20],
 	const unsigned char *value_sha1;
 	enum object_type type;
 	char *value;
-	unsigned long size;
+	size_t size;
 
 	value_sha1 = get_note(&c->tree, key_sha1);
 	if (!value_sha1)

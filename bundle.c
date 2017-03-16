@@ -208,10 +208,10 @@ int list_bundle_refs(struct bundle_header *header, int argc, const char **argv)
 
 static int is_tag_in_date_range(struct object *tag, struct rev_info *revs)
 {
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	char *buf = NULL, *line, *lineend;
-	unsigned long date;
+	size_t date;
 	int result = 1;
 
 	if (revs->max_age == -1 && revs->min_age == -1)

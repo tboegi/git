@@ -12,7 +12,7 @@ struct split_index *init_split_index(struct index_state *istate)
 }
 
 int read_link_extension(struct index_state *istate,
-			 const void *data_, unsigned long sz)
+			 const void *data_, size_t sz)
 {
 	const unsigned char *data = data_;
 	struct split_index *si;

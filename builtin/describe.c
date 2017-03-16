@@ -208,11 +208,11 @@ static int compare_pt(const void *a_, const void *b_)
 	return 0;
 }
 
-static unsigned long finish_depth_computation(
+static size_t finish_depth_computation(
 	struct commit_list **list,
 	struct possible_tag *best)
 {
-	unsigned long seen_commits = 0;
+	size_t seen_commits = 0;
 	while (*list) {
 		struct commit *c = pop_commit(list);
 		struct commit_list *parents = c->parents;
@@ -275,7 +275,7 @@ static void describe(const char *arg, int last_one)
 	struct commit_name *n;
 	struct possible_tag all_matches[MAX_TAGS];
 	unsigned int match_cnt = 0, annotated_cnt = 0, cur_match;
-	unsigned long seen_commits = 0;
+	size_t seen_commits = 0;
 	unsigned int unannotated_cnt = 0;
 
 	if (get_sha1(arg, sha1))

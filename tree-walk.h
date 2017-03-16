@@ -32,8 +32,8 @@ static inline int tree_entry_len(const struct name_entry *ne)
 
 void update_tree_entry(struct tree_desc *);
 int update_tree_entry_gently(struct tree_desc *);
-void init_tree_desc(struct tree_desc *desc, const void *buf, unsigned long size);
-int init_tree_desc_gently(struct tree_desc *desc, const void *buf, unsigned long size);
+void init_tree_desc(struct tree_desc *desc, const void *buf, size_t size);
+int init_tree_desc_gently(struct tree_desc *desc, const void *buf, size_t size);
 
 /*
  * Helper function that does both tree_entry_extract() and update_tree_entry()
@@ -45,7 +45,7 @@ int tree_entry_gently(struct tree_desc *, struct name_entry *);
 void *fill_tree_descriptor(struct tree_desc *desc, const unsigned char *sha1);
 
 struct traverse_info;
-typedef int (*traverse_callback_t)(int n, unsigned long mask, unsigned long dirmask, struct name_entry *entry, struct traverse_info *);
+typedef int (*traverse_callback_t)(int n, size_t mask, unsigned long dirmask, struct name_entry *entry, struct traverse_info *);
 int traverse_trees(int n, struct tree_desc *t, struct traverse_info *info);
 
 enum follow_symlinks_result {
@@ -73,7 +73,7 @@ struct traverse_info {
 	int pathlen;
 	struct pathspec *pathspec;
 
-	unsigned long df_conflicts;
+	size_t df_conflicts;
 	traverse_callback_t fn;
 	void *data;
 	int show_all_errors;

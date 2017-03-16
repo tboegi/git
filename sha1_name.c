@@ -453,7 +453,7 @@ int for_each_abbrev(const char *prefix, each_abbrev_fn fn, void *cb_data)
  * ways to do this quickly with fls() or __builtin_clzl(), but speed is
  * probably not a big deal here.
  */
-static unsigned msb(unsigned long val)
+static unsigned msb(size_t val)
 {
 	unsigned r = 0;
 	while (val >>= 1)
@@ -466,7 +466,7 @@ int find_unique_abbrev_r(char *hex, const unsigned char *sha1, int len)
 	int status, exists;
 
 	if (len < 0) {
-		unsigned long count = approximate_object_count();
+		size_t count = approximate_object_count();
 		/*
 		 * Add one because the MSB only tells us the highest bit set,
 		 * not including the value of all the _other_ bits (so "15"
@@ -658,8 +658,8 @@ static int get_sha1_basic(const char *str, int len, unsigned char *sha1,
 
 	if (reflog_len) {
 		int nth, i;
-		unsigned long at_time;
-		unsigned long co_time;
+		size_t at_time;
+		size_t co_time;
 		int co_tz, co_cnt;
 
 		/* Is it asking for N-th entry, or approxidate? */
@@ -1052,7 +1052,7 @@ struct grab_nth_branch_switch_cbdata {
 };
 
 static int grab_nth_branch_switch(unsigned char *osha1, unsigned char *nsha1,
-				  const char *email, unsigned long timestamp, int tz,
+				  const char *email, size_t timestamp, int tz,
 				  const char *message, void *cb_data)
 {
 	struct grab_nth_branch_switch_cbdata *cb = cb_data;

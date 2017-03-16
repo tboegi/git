@@ -224,7 +224,7 @@
  * We can't take "long long" here as not everybody has it.
  */
 typedef long intptr_t;
-typedef unsigned long uintptr_t;
+typedef size_t uintptr_t;
 #endif
 #undef _ALL_SOURCE /* AIX 5.3L defines a struct list with _ALL_SOURCE. */
 #include <grp.h>
@@ -952,7 +952,7 @@ static inline int sane_iscase(int x, int is_lower)
 
 static inline int strtoul_ui(char const *s, int base, unsigned int *result)
 {
-	unsigned long ul;
+	size_t ul;
 	char *p;
 
 	errno = 0;

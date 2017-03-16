@@ -4,8 +4,8 @@
 
 static int boolean = 0;
 static int integer = 0;
-static unsigned long magnitude = 0;
-static unsigned long timestamp;
+static size_t magnitude = 0;
+static size_t timestamp;
 static int abbrev = 7;
 static int verbose = -1; /* unspecified */
 static int dry_run = 0, quiet = 0;

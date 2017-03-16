@@ -208,7 +208,7 @@ static FORCEINLINE unsigned int size2binidx(size_t _size) THROWSPEC
 	topbit = sizeof(size)*__CHAR_BIT__ - 1 - __builtin_clz(size);
 #elif defined(_MSC_VER) && _MSC_VER>=1300
 	{
-	    unsigned long bsrTopBit;
+	    size_t bsrTopBit;
 
 	    _BitScanReverse(&bsrTopBit, size);
 

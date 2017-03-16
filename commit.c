@@ -66,7 +66,7 @@ struct commit *lookup_commit_reference_by_name(const char *name)
 	return commit;
 }
 
-static unsigned long parse_commit_date(const char *buf, const char *tail)
+static size_t parse_commit_date(const char *buf, const char *tail)
 {
 	const char *dateptr;
 
@@ -231,19 +231,19 @@ int unregister_shallow(const unsigned char *sha1)
 
 struct commit_buffer {
 	void *buffer;
-	unsigned long size;
+	size_t size;
 };
 define_commit_slab(buffer_slab, struct commit_buffer);
 static struct buffer_slab buffer_slab = COMMIT_SLAB_INIT(1, buffer_slab);
 
-void set_commit_buffer(struct commit *commit, void *buffer, unsigned long size)
+void set_commit_buffer(struct commit *commit, void *buffer, size_t size)
 {
 	struct commit_buffer *v = buffer_slab_at(&buffer_slab, commit);
 	v->buffer = buffer;
 	v->size = size;
 }
 
-const void *get_cached_commit_buffer(const struct commit *commit, unsigned long *sizep)
+const void *get_cached_commit_buffer(const struct commit *commit, size_t *sizep)
 {
 	struct commit_buffer *v = buffer_slab_peek(&buffer_slab, commit);
 	if (!v) {
@@ -256,12 +256,12 @@ const void *get_cached_commit_buffer(const struct commit *commit, unsigned long 
 	return v->buffer;
 }
 
-const void *get_commit_buffer(const struct commit *commit, unsigned long *sizep)
+const void *get_commit_buffer(const struct commit *commit, size_t *sizep)
 {
 	const void *ret = get_cached_commit_buffer(commit, sizep);
 	if (!ret) {
 		enum object_type type;
-		unsigned long size;
+		size_t size;
 		ret = read_sha1_file(commit->object.oid.hash, &type, &size);
 		if (!ret)
 			die("cannot read commit object %s",
@@ -292,7 +292,7 @@ void free_commit_buffer(struct commit *commit)
 	}
 }
 
-const void *detach_commit_buffer(struct commit *commit, unsigned long *sizep)
+const void *detach_commit_buffer(struct commit *commit, size_t *sizep)
 {
 	struct commit_buffer *v = buffer_slab_peek(&buffer_slab, commit);
 	void *ret;
@@ -311,7 +311,7 @@ const void *detach_commit_buffer(struct commit *commit, unsigned long *sizep)
 	return ret;
 }
 
-int parse_commit_buffer(struct commit *item, const void *buffer, unsigned long size)
+int parse_commit_buffer(struct commit *item, const void *buffer, size_t size)
 {
 	const char *tail = buffer;
 	const char *bufptr = buffer;
@@ -373,7 +373,7 @@ int parse_commit_gently(struct commit *item, int quiet_on_missing)
 {
 	enum object_type type;
 	void *buffer;
-	unsigned long size;
+	size_t size;
 	int ret;
 
 	if (!item)
@@ -473,8 +473,8 @@ struct commit_list * commit_list_insert_by_date(struct commit *item, struct comm
 
 static int commit_list_compare_by_date(const void *a, const void *b)
 {
-	unsigned long a_date = ((const struct commit_list *)a)->item->date;
-	unsigned long b_date = ((const struct commit_list *)b)->item->date;
+	size_t a_date = ((const struct commit_list *)a)->item->date;
+	size_t b_date = ((const struct commit_list *)b)->item->date;
 	if (a_date < b_date)
 		return 1;
 	if (a_date > b_date)
@@ -588,7 +588,7 @@ struct commit *pop_commit(struct commit_list **stack)
 define_commit_slab(indegree_slab, int);
 
 /* record author-date for each commit object */
-define_commit_slab(author_date_slab, unsigned long);
+define_commit_slab(author_date_slab, size_t);
 
 static void record_author_date(struct author_date_slab *author_date,
 			       struct commit *commit)
@@ -598,7 +598,7 @@ static void record_author_date(struct author_date_slab *author_date,
 	const char *ident_line;
 	size_t ident_len;
 	char *date_end;
-	unsigned long date;
+	size_t date;
 
 	ident_line = find_commit_header(buffer, "author", &ident_len);
 	if (!ident_line)
@@ -621,8 +621,8 @@ static int compare_commits_by_author_date(const void *a_, const void *b_,
 {
 	const struct commit *a = a_, *b = b_;
 	struct author_date_slab *author_date = cb_data;
-	unsigned long a_date = *(author_date_slab_at(author_date, a));
-	unsigned long b_date = *(author_date_slab_at(author_date, b));
+	size_t a_date = *(author_date_slab_at(author_date, a));
+	size_t b_date = *(author_date_slab_at(author_date, b));
 
 	/* newer commits with larger date first */
 	if (a_date < b_date)
@@ -1129,7 +1129,7 @@ int parse_signed_commit(const struct commit *commit,
 			struct strbuf *payload, struct strbuf *signature)
 {
 
-	unsigned long size;
+	size_t size;
 	const char *buffer = get_commit_buffer(commit, &size);
 	int in_signature, saw_signature = -1;
 	const char *line, *tail;
@@ -1204,7 +1204,7 @@ static void handle_signed_tag(struct commit *parent, struct commit_extra_header 
 	struct merge_remote_desc *desc;
 	struct commit_extra_header *mergetag;
 	char *buf;
-	unsigned long size, len;
+	size_t size, len;
 	enum object_type type;
 
 	desc = merge_remote_util(parent);
@@ -1285,7 +1285,7 @@ struct commit_extra_header *read_commit_extra_headers(struct commit *commit,
 						      const char **exclude)
 {
 	struct commit_extra_header *extra = NULL;
-	unsigned long size;
+	size_t size;
 	const char *buffer = get_commit_buffer(commit, &size);
 	extra = read_commit_extra_header_lines(buffer, size, exclude);
 	unuse_commit_buffer(commit, buffer);

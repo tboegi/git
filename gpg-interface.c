@@ -111,7 +111,7 @@ void print_signature_buffer(const struct signature_check *sigc, unsigned flags)
  * offset where the embedded detached signature begins, or the end of
  * the data when there is no such signature.
  */
-size_t parse_signature(const char *buf, unsigned long size)
+size_t parse_signature(const char *buf, size_t size)
 {
 	char *eol;
 	size_t len = 0;

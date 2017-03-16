@@ -32,7 +32,7 @@
 
 typedef struct s_xdlclass {
 	struct s_xdlclass *next;
-	unsigned long ha;
+	size_t ha;
 	char const *line;
 	long size;
 	long idx;
@@ -147,7 +147,7 @@ static int xdl_classify_record(unsigned int pass, xdlclassifier_t *cf, xrecord_t
 
 	(pass == 1) ? rcrec->len1++ : rcrec->len2++;
 
-	rec->ha = (unsigned long) rcrec->idx;
+	rec->ha = (size_t) rcrec->idx;
 
 	hi = (long) XDL_HASHLONG(rec->ha, hbits);
 	rec->next = rhash[hi];
@@ -161,12 +161,12 @@ static int xdl_prepare_ctx(unsigned int pass, mmfile_t *mf, long narec, xpparam_
 			   xdlclassifier_t *cf, xdfile_t *xdf) {
 	unsigned int hbits;
 	long nrec, hsize, bsize;
-	unsigned long hav;
+	size_t hav;
 	char const *blk, *cur, *top, *prev;
 	xrecord_t *crec;
 	xrecord_t **recs, **rrecs;
 	xrecord_t **rhash;
-	unsigned long *ha;
+	size_t *ha;
 	char *rchg;
 	long *rindex;
 
@@ -221,7 +221,7 @@ static int xdl_prepare_ctx(unsigned int pass, mmfile_t *mf, long narec, xpparam_
 
 	if (!(rindex = (long *) xdl_malloc((nrec + 1) * sizeof(long))))
 		goto abort;
-	if (!(ha = (unsigned long *) xdl_malloc((nrec + 1) * sizeof(unsigned long))))
+	if (!(ha = (size_t *) xdl_malloc((nrec + 1) * sizeof(unsigned long))))
 		goto abort;
 
 	xdf->nrec = nrec;

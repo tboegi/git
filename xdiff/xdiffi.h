@@ -26,7 +26,7 @@
 
 typedef struct s_diffdata {
 	long nrec;
-	unsigned long const *ha;
+	size_t const *ha;
 	long *rindex;
 	char *rchg;
 } diffdata_t;

@@ -7,7 +7,7 @@
 
 const char *tag_type = "tag";
 
-static int run_gpg_verify(const char *buf, unsigned long size, unsigned flags)
+static int run_gpg_verify(const char *buf, size_t size, unsigned flags)
 {
 	struct signature_check sigc;
 	size_t payload_size;
@@ -38,7 +38,7 @@ int gpg_verify_tag(const unsigned char *sha1, const char *name_to_report,
 {
 	enum object_type type;
 	char *buf;
-	unsigned long size;
+	size_t size;
 	int ret;
 
 	type = sha1_object_info(sha1, NULL);
@@ -97,7 +97,7 @@ struct tag *lookup_tag(const unsigned char *sha1)
 	return object_as_type(obj, OBJ_TAG, 0);
 }
 
-static unsigned long parse_tag_date(const char *buf, const char *tail)
+static size_t parse_tag_date(const char *buf, const char *tail)
 {
 	const char *dateptr;
 
@@ -114,7 +114,7 @@ static unsigned long parse_tag_date(const char *buf, const char *tail)
 	return strtoul(dateptr, NULL, 10);
 }
 
-int parse_tag_buffer(struct tag *item, const void *data, unsigned long size)
+int parse_tag_buffer(struct tag *item, const void *data, size_t size)
 {
 	unsigned char sha1[20];
 	char type[20];
@@ -178,7 +178,7 @@ int parse_tag(struct tag *item)
 {
 	enum object_type type;
 	void *data;
-	unsigned long size;
+	size_t size;
 	int ret;
 
 	if (item->object.parsed)

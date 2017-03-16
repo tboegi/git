@@ -217,7 +217,7 @@ static struct commit *handle_commit(struct rev_info *revs,
 	const char *name = entry->name;
 	const char *path = entry->path;
 	unsigned int mode = entry->mode;
-	unsigned long flags = object->flags;
+	size_t flags = object->flags;
 
 	/*
 	 * Tag object? Look what it points to..
@@ -884,7 +884,7 @@ static void cherry_pick_list(struct commit_list *list, struct rev_info *revs)
 /* How many extra uninteresting commits we want to see.. */
 #define SLOP 5
 
-static int still_interesting(struct commit_list *src, unsigned long date, int slop,
+static int still_interesting(struct commit_list *src, size_t date, int slop,
 			     struct commit **interesting_cache)
 {
 	/*
@@ -1018,7 +1018,7 @@ static void limit_left_right(struct commit_list *list, struct rev_info *revs)
 static int limit_list(struct rev_info *revs)
 {
 	int slop = SLOP;
-	unsigned long date = ~0ul;
+	size_t date = ~0ul;
 	struct commit_list *list = revs->commits;
 	struct commit_list *newlist = NULL;
 	struct commit_list **p = &newlist;
@@ -1215,7 +1215,7 @@ static void handle_one_reflog_commit(unsigned char *sha1, void *cb_data)
 }
 
 static int handle_one_reflog_ent(unsigned char *osha1, unsigned char *nsha1,
-		const char *email, unsigned long timestamp, int tz,
+		const char *email, size_t timestamp, int tz,
 		const char *message, void *cb_data)
 {
 	handle_one_reflog_commit(osha1, cb_data);

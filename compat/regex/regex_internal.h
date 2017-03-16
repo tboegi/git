@@ -168,7 +168,7 @@ extern const size_t __re_error_msgid_idx[] attribute_hidden;
 
 /* An integer used to represent a set of bits.  It must be unsigned,
    and must be at least as wide as unsigned int.  */
-typedef unsigned long int bitset_word_t;
+typedef size_t bitset_word_t;
 /* All bits set in a bitset_word_t.  */
 #define BITSET_WORD_MAX ULONG_MAX
 /* Number of bits in a bitset_word_t.  */

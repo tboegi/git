@@ -271,7 +271,7 @@ static int run_dir_diff(const char *extcmd, int symlinks, const char *prefix,
 	struct hashmap_iter iter;
 	struct pair_entry *entry;
 	enum object_type type;
-	unsigned long size;
+	size_t size;
 	struct index_state wtindex;
 	struct checkout lstate, rstate;
 	int rc, flags = RUN_GIT_CMD, err = 0;

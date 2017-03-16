@@ -103,7 +103,7 @@ diff a/ls-tree.c b/ls-tree.c
 +static void prepare_root(unsigned char *sha1)
 +{
 +	unsigned char rsha[20];
-+	unsigned long size;
++	size_t size;
 +	void *buf;
 +	struct tree *root_tree;
 +
@@ -243,7 +243,7 @@ diff a/ls-tree.c b/ls-tree.c
 - */
 -static void list_recursive(void *buffer,
 -			   const char *type,
--			   unsigned long size,
+-			   size_t size,
 -			   struct path_prefix *prefix,
 -			   char **match, int matches)
 -{
@@ -260,7 +260,7 @@ diff a/ls-tree.c b/ls-tree.c
 -		int namelen = strlen(buffer)+1;
 -		void *eltbuf = NULL;
 -		char elttype[20];
--		unsigned long eltsize;
+-		size_t eltsize;
 -		unsigned char *sha1 = buffer + namelen;
 -		char *path = strchr(buffer, ' ') + 1;
 -		unsigned int mode;
@@ -388,7 +388,7 @@ diff a/ls-tree.c b/ls-tree.c
 +static int list(char **path)
  {
 -	void *buffer;
--	unsigned long size;
+-	size_t size;
 -	int npaths;
 -
 -	for (npaths = 0; path[npaths] != NULL; npaths++)

@@ -531,8 +531,8 @@ static int switch_cache_bottom(struct traverse_info *info)
 	return ret;
 }
 
-static int traverse_trees_recursive(int n, unsigned long dirmask,
-				    unsigned long df_conflicts,
+static int traverse_trees_recursive(int n, size_t dirmask,
+				    size_t df_conflicts,
 				    struct name_entry *names,
 				    struct traverse_info *info)
 {
@@ -678,15 +678,15 @@ static struct cache_entry *create_ce_entry(const struct traverse_info *info, con
 	return ce;
 }
 
-static int unpack_nondirectories(int n, unsigned long mask,
-				 unsigned long dirmask,
+static int unpack_nondirectories(int n, size_t mask,
+				 size_t dirmask,
 				 struct cache_entry **src,
 				 const struct name_entry *names,
 				 const struct traverse_info *info)
 {
 	int i;
 	struct unpack_trees_options *o = info->data;
-	unsigned long conflicts = info->df_conflicts | dirmask;
+	size_t conflicts = info->df_conflicts | dirmask;
 
 	/* Do we have *only* directories? Nothing to do */
 	if (mask == dirmask && !src[0])
@@ -848,8 +848,8 @@ static void debug_name_entry(int i, struct name_entry *n)
 }
 
 static void debug_unpack_callback(int n,
-				  unsigned long mask,
-				  unsigned long dirmask,
+				  size_t mask,
+				  size_t dirmask,
 				  struct name_entry *names,
 				  struct traverse_info *info)
 {
@@ -862,7 +862,7 @@ static void debug_unpack_callback(int n,
 		debug_name_entry(i, names + i);
 }
 
-static int unpack_callback(int n, unsigned long mask, unsigned long dirmask, struct name_entry *names, struct traverse_info *info)
+static int unpack_callback(int n, size_t mask, unsigned long dirmask, struct name_entry *names, struct traverse_info *info)
 {
 	struct cache_entry *src[MAX_UNPACK_TREES + 1] = { NULL, };
 	struct unpack_trees_options *o = info->data;

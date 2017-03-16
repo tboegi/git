@@ -22,14 +22,14 @@ cat >klibc/arch/x86_64/include/klibc/archsetjmp.h <<\EOF
 #define _KLIBC_ARCHSETJMP_H
 
 struct __jmp_buf {
-  unsigned long __rbx;
-  unsigned long __rsp;
-  unsigned long __rbp;
-  unsigned long __r12;
-  unsigned long __r13;
-  unsigned long __r14;
-  unsigned long __r15;
-  unsigned long __rip;
+  size_t __rbx;
+  size_t __rsp;
+  size_t __rbp;
+  size_t __r12;
+  size_t __r13;
+  size_t __r14;
+  size_t __r15;
+  size_t __rip;
 };
 
 typedef struct __jmp_buf jmp_buf[1];
@@ -57,25 +57,25 @@ copy to include/arch/cris/klibc/archsetjmp.h
  #define _KLIBC_ARCHSETJMP_H
 
  struct __jmp_buf {
--  unsigned long __rbx;
--  unsigned long __rsp;
--  unsigned long __rbp;
--  unsigned long __r12;
--  unsigned long __r13;
--  unsigned long __r14;
--  unsigned long __r15;
--  unsigned long __rip;
-+  unsigned long __r0;
-+  unsigned long __r1;
-+  unsigned long __r2;
-+  unsigned long __r3;
-+  unsigned long __r4;
-+  unsigned long __r5;
-+  unsigned long __r6;
-+  unsigned long __r7;
-+  unsigned long __r8;
-+  unsigned long __sp;
-+  unsigned long __srp;
+-  size_t __rbx;
+-  size_t __rsp;
+-  size_t __rbp;
+-  size_t __r12;
+-  size_t __r13;
+-  size_t __r14;
+-  size_t __r15;
+-  size_t __rip;
++  size_t __r0;
++  size_t __r1;
++  size_t __r2;
++  size_t __r3;
++  size_t __r4;
++  size_t __r5;
++  size_t __r6;
++  size_t __r7;
++  size_t __r8;
++  size_t __sp;
++  size_t __srp;
  };
 
  typedef struct __jmp_buf jmp_buf[1];
@@ -98,18 +98,18 @@ rename to include/arch/m32r/klibc/archsetjmp.h
  #define _KLIBC_ARCHSETJMP_H
 
  struct __jmp_buf {
--  unsigned long __rbx;
--  unsigned long __rsp;
--  unsigned long __rbp;
-+  unsigned long __r8;
-+  unsigned long __r9;
-+  unsigned long __r10;
-+  unsigned long __r11;
-   unsigned long __r12;
-   unsigned long __r13;
-   unsigned long __r14;
-   unsigned long __r15;
--  unsigned long __rip;
+-  size_t __rbx;
+-  size_t __rsp;
+-  size_t __rbp;
++  size_t __r8;
++  size_t __r9;
++  size_t __r10;
++  size_t __r11;
+   size_t __r12;
+   size_t __r13;
+   size_t __r14;
+   size_t __r15;
+-  size_t __rip;
  };
 
  typedef struct __jmp_buf jmp_buf[1];

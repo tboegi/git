@@ -181,7 +181,7 @@ static void get_from_rev(struct rev_info *rev, struct shortlog *log)
 
 static int parse_uint(char const **arg, int comma, int defval)
 {
-	unsigned long ul;
+	size_t ul;
 	int ret;
 	char *endp;
 
