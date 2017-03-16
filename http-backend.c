@@ -305,9 +305,9 @@ static ssize_t read_request(int fd, unsigned char **out)
 
 		/* otherwise, grow and try again (if we can) */
 		if (alloc == max_request_buffer)
-			die("request was larger than our maximum size (%lu);"
+			die("request was larger than our maximum size (%"PRIuMAX");"
 			    " try setting GIT_HTTP_MAX_REQUEST_BUFFER",
-			    max_request_buffer);
+			    (uintmax_t)max_request_buffer);
 
 		alloc = alloc_nr(alloc);
 		if (alloc > max_request_buffer)

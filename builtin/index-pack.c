@@ -446,7 +446,7 @@ static void *unpack_entry_data(off_t offset, size_t size,
 	int hdrlen;
 
 	if (!is_delta_type(type)) {
-		hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", typename(type), size) + 1;
+		hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %" "PRIuMAX", typename(type), (uintmax_t)size) + 1;
 		git_SHA1_Init(&c);
 		git_SHA1_Update(&c, hdr, hdrlen);
 	} else
@@ -1597,11 +1597,11 @@ static void show_pack_info(int stat_only)
 	for (i = 0; i < deepest_delta; i++) {
 		if (!chain_histogram[i])
 			continue;
-		printf_ln(Q_("chain length = %d: %lu object",
-			     "chain length = %d: %lu objects",
-			     chain_histogram[i]),
+		printf_ln(Q_("chain length = %d: %" PRIuMAX " object",
+			     "chain length = %d: %" PRIuMAX " objects",
+			     (uintmax_t)chain_histogram[i]),
 			  i + 1,
-			  chain_histogram[i]);
+			  (uintmax_t)chain_histogram[i]);
 	}
 }
 

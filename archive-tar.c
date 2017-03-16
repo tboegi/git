@@ -197,8 +197,8 @@ static void prepare_header(struct archiver_args *args,
 			   unsigned int mode, size_t size)
 {
 	xsnprintf(header->mode, sizeof(header->mode), "%07o", mode & 07777);
-	xsnprintf(header->size, sizeof(header->size), "%011lo", S_ISREG(mode) ? size : 0);
-	xsnprintf(header->mtime, sizeof(header->mtime), "%011lo", (size_t) args->time);
+	xsnprintf(header->size, sizeof(header->size), "%011" PRIuMAX, S_ISREG(mode) ? (uintmax_t)size : (uintmax_t)0);
+	xsnprintf(header->mtime, sizeof(header->mtime), "%011" PRIuMAX, (uintmax_t) args->time);
 
 	xsnprintf(header->uid, sizeof(header->uid), "%07o", 0);
 	xsnprintf(header->gid, sizeof(header->gid), "%07o", 0);

@@ -1685,7 +1685,7 @@ extern off_t find_pack_entry_one(const unsigned char *sha1, struct packed_git *)
 
 extern int is_pack_valid(struct packed_git *);
 extern void *unpack_entry(struct packed_git *, off_t, enum object_type *, size_t *);
-extern size_t unpack_object_header_buffer(const unsigned char *buf, size_t len, enum object_type *type, unsigned long *sizep);
+extern size_t unpack_object_header_buffer(const unsigned char *buf, size_t len, enum object_type *type, size_t *sizep);
 extern size_t get_size_from_delta(struct packed_git *, struct pack_window **, off_t);
 extern int unpack_object_header(struct packed_git *, struct pack_window **, off_t *, size_t *);
 

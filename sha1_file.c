@@ -1655,7 +1655,8 @@ int check_sha1_signature(const unsigned char *sha1, void *map,
 		return -1;
 
 	/* Generate the header */
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", typename(obj_type), size) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %"PRIuMAX, typename(obj_type),
+			   (uintmax_t)size) + 1;
 
 	/* Sha1.. */
 	git_SHA1_Init(&c);
@@ -3193,7 +3194,7 @@ static void write_sha1_file_prepare(const void *buf, size_t len,
 	git_SHA_CTX c;
 
 	/* Generate the header */
-	*hdrlen = xsnprintf(hdr, *hdrlen, "%s %lu", type, len)+1;
+	*hdrlen = xsnprintf(hdr, *hdrlen, "%s %"PRIuMAX, type, (uintmax_t)len)+1;
 
 	/* Sha1.. */
 	git_SHA1_Init(&c);
@@ -3450,7 +3451,7 @@ int force_object_loose(const unsigned char *sha1, time_t mtime)
 	buf = read_packed_sha1(sha1, &type, &len);
 	if (!buf)
 		return error("cannot read sha1_file for %s", sha1_to_hex(sha1));
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", typename(type), len) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %"PRIuMAX, typename(type), (uintmax_t)len) + 1;
 	ret = write_loose_object(sha1, hdr, hdrlen, buf, len, mtime);
 	free(buf);
 

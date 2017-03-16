@@ -1285,7 +1285,7 @@ int mspace_mallopt(int, int);
 #endif /* WIN32 */
 
 #include <stdio.h>       /* for printing in malloc_stats */
-
+#include <inttypes.h>
 #ifndef LACKS_ERRNO_H
 #include <errno.h>       /* for MALLOC_FAILURE_ACTION */
 #endif /* LACKS_ERRNO_H */
@@ -3460,9 +3460,9 @@ static void internal_malloc_stats(mstate m) {
       }
     }
 
-    fprintf(stderr, "max system bytes = %10lu\n", (size_t)(maxfp));
-    fprintf(stderr, "system bytes     = %10lu\n", (size_t)(fp));
-    fprintf(stderr, "in use bytes     = %10lu\n", (size_t)(used));
+    fprintf(stderr, "max system bytes = %10"PRIuMAX"\n", (uintmax_t)(maxfp));
+    fprintf(stderr, "system bytes     = %10"PRIuMAX"\n", (uintmax_t)(fp));
+    fprintf(stderr, "in use bytes     = %10"PRIuMAX"\n", (uintmax_t)(used));
 
     POSTACTION(m);
   }

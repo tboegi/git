@@ -135,12 +135,12 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 			strbuf_humanise_bytes(&pack_buf, size_pack);
 			strbuf_humanise_bytes(&garbage_buf, size_garbage);
 		} else {
-			strbuf_addf(&loose_buf, "%lu",
-				    (size_t)(loose_size / 1024));
-			strbuf_addf(&pack_buf, "%lu",
-				    (size_t)(size_pack / 1024));
-			strbuf_addf(&garbage_buf, "%lu",
-				    (size_t)(size_garbage / 1024));
+			strbuf_addf(&loose_buf, "%" "PRIuMAX",
+				    (uintmax_t)(loose_size / 1024));
+			strbuf_addf(&pack_buf, "%" "PRIuMAX",
+				    (uintmax_t)(size_pack / 1024));
+			strbuf_addf(&garbage_buf, "%" "PRIuMAX",
+				    (uintmax_t)(size_garbage / 1024));
 		}
 
 		printf("count: %lu\n", loose);

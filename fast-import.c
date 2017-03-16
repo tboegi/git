@@ -1089,8 +1089,8 @@ static int store_object(
 	git_SHA_CTX c;
 	git_zstream s;
 
-	hdrlen = xsnprintf((char *)hdr, sizeof(hdr), "%s %lu",
-			   typename(type), (size_t)dat->len) + 1;
+	hdrlen = xsnprintf((char *)hdr, sizeof(hdr), "%s %"PRIuMAX,
+			   typename(type), (uintmax_t)dat->len) + 1;
 	git_SHA1_Init(&c);
 	git_SHA1_Update(&c, hdr, hdrlen);
 	git_SHA1_Update(&c, dat->buf, dat->len);
@@ -2037,8 +2037,8 @@ static int parse_data(struct strbuf *sb, uintmax_t limit, uintmax_t *len_res)
 		while (n < length) {
 			size_t s = strbuf_fread(sb, length - n, stdin);
 			if (!s && feof(stdin))
-				die("EOF in data (%lu bytes remaining)",
-					(size_t)(length - n));
+				die("EOF in data (%"PRIuMAX" bytes remaining)",
+					(uintmax_t)(length - n));
 			n += s;
 		}
 	}
@@ -2976,8 +2976,8 @@ static void cat_blob(struct object_entry *oe, unsigned char sha1[20])
 		die("Object %s is a %s but a blob was expected.",
 		    sha1_to_hex(sha1), typename(type));
 	strbuf_reset(&line);
-	strbuf_addf(&line, "%s %s %lu\n", sha1_to_hex(sha1),
-						typename(type), size);
+	strbuf_addf(&line, "%s %s %"PRIuMAX"\n", sha1_to_hex(sha1),
+						typename(type), (uintmax_t)size);
 	cat_blob_write(line.buf, line.len);
 	strbuf_release(&line);
 	cat_blob_write(buf, size);
@@ -3287,7 +3287,7 @@ static int parse_one_option(const char *option)
 		if (!git_parse_ulong(option, &v))
 			return 0;
 		if (v < 8192) {
-			warning("max-pack-size is now in bytes, assuming --max-pack-size=%lum", v);
+			warning("max-pack-size is now in bytes, assuming --max-pack-size=%"PRIuMAX"m", v);
 			v *= 1024 * 1024;
 		} else if (v < 1024 * 1024) {
 			warning("minimum max-pack-size is 1 MiB");

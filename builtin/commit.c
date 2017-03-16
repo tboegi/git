@@ -551,7 +551,7 @@ static int parse_force_date(const char *in, struct strbuf *out)
 		size_t t = approxidate_careful(in, &errors);
 		if (errors)
 			return -1;
-		strbuf_addf(out, "%lu", t);
+		strbuf_addf(out, "%" "PRIuMAX", (uintmax_t)t);
 	}
 
 	return 0;

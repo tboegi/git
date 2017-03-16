@@ -100,41 +100,41 @@ void show_date_relative(size_t time, int tz,
 	diff = now->tv_sec - time;
 	if (diff < 90) {
 		strbuf_addf(timebuf,
-			 Q_("%lu second ago", "%lu seconds ago", diff), diff);
+			 Q_("%"PRIuMAX" second ago", "%"PRIuMAX" seconds ago", (uintmax_t)diff), (uintmax_t)diff);
 		return;
 	}
 	/* Turn it into minutes */
 	diff = (diff + 30) / 60;
 	if (diff < 90) {
 		strbuf_addf(timebuf,
-			 Q_("%lu minute ago", "%lu minutes ago", diff), diff);
+			 Q_("%"PRIuMAX" minute ago", "%"PRIuMAX" minutes ago", (uintmax_t)diff), (uintmax_t)diff);
 		return;
 	}
 	/* Turn it into hours */
 	diff = (diff + 30) / 60;
 	if (diff < 36) {
 		strbuf_addf(timebuf,
-			 Q_("%lu hour ago", "%lu hours ago", diff), diff);
+			 Q_("%"PRIuMAX" hour ago", "%"PRIuMAX" hours ago", (uintmax_t)diff), (uintmax_t)diff);
 		return;
 	}
 	/* We deal with number of days from here on */
 	diff = (diff + 12) / 24;
 	if (diff < 14) {
 		strbuf_addf(timebuf,
-			 Q_("%lu day ago", "%lu days ago", diff), diff);
+			 Q_("%"PRIuMAX" day ago", "%"PRIuMAX" days ago", diff), (uintmax_t)diff);
 		return;
 	}
 	/* Say weeks for the past 10 weeks or so */
 	if (diff < 70) {
 		strbuf_addf(timebuf,
-			 Q_("%lu week ago", "%lu weeks ago", (diff + 3) / 7),
-			 (diff + 3) / 7);
+			 Q_("%"PRIuMAX" week ago", "%"PRIuMAX" weeks ago", (uintmax_t)(diff + 3) / 7),
+			 (uintmax_t)(diff + 3) / 7);
 		return;
 	}
 	/* Say months for the past 12 months or so */
 	if (diff < 365) {
 		strbuf_addf(timebuf,
-			 Q_("%lu month ago", "%lu months ago", (diff + 15) / 30),
+			 Q_("%"PRIuMAX" month ago", "%"PRIuMAX" months ago", (uintmax_t)(diff + 15) / 30),
 			 (diff + 15) / 30);
 		return;
 	}
@@ -145,21 +145,21 @@ void show_date_relative(size_t time, int tz,
 		size_t months = totalmonths % 12;
 		if (months) {
 			struct strbuf sb = STRBUF_INIT;
-			strbuf_addf(&sb, Q_("%lu year", "%lu years", years), years);
+			strbuf_addf(&sb, Q_("%"PRIuMAX" year", "%"PRIuMAX" years", (uintmax_t)years), (uintmax_t)years);
 			strbuf_addf(timebuf,
 				 /* TRANSLATORS: "%s" is "<n> years" */
-				 Q_("%s, %lu month ago", "%s, %lu months ago", months),
-				 sb.buf, months);
+				 Q_("%s, %"PRIuMAX" month ago", "%s, %"PRIuMAX" months ago", (uintmax_t)months),
+				 sb.buf, (uintmax_t)months);
 			strbuf_release(&sb);
 		} else
 			strbuf_addf(timebuf,
-				 Q_("%lu year ago", "%lu years ago", years), years);
+				 Q_("%"PRIuMAX" year ago", "%"PRIuMAX" years ago", (uintmax_t)years), (uintmax_t)years);
 		return;
 	}
 	/* Otherwise, just years. Centuries is probably overkill. */
 	strbuf_addf(timebuf,
-		 Q_("%lu year ago", "%lu years ago", (diff + 183) / 365),
-		 (diff + 183) / 365);
+		 Q_("%"PRIuMAX" year ago", "%"PRIuMAX" years ago", (uintmax_t)(diff + 183) / 365),
+		 (uintmax_t)(diff + 183) / 365);
 }
 
 struct date_mode *date_mode_from_type(enum date_mode_type type)
@@ -179,7 +179,7 @@ const char *show_date(size_t time, int tz, const struct date_mode *mode)
 
 	if (mode->type == DATE_UNIX) {
 		strbuf_reset(&timebuf);
-		strbuf_addf(&timebuf, "%lu", time);
+		strbuf_addf(&timebuf, "%"PRIuMAX, (uintmax_t)time);
 		return timebuf.buf;
 	}
 
@@ -188,7 +188,7 @@ const char *show_date(size_t time, int tz, const struct date_mode *mode)
 
 	if (mode->type == DATE_RAW) {
 		strbuf_reset(&timebuf);
-		strbuf_addf(&timebuf, "%lu %+05d", time, tz);
+		strbuf_addf(&timebuf, "%"PRIuMAX" %+05d", (uintmax_t)time, tz);
 		return timebuf.buf;
 	}
 
@@ -643,7 +643,7 @@ static void date_string(size_t date, int offset, struct strbuf *buf)
 		offset = -offset;
 		sign = '-';
 	}
-	strbuf_addf(buf, "%lu %c%02d%02d", date, sign, offset / 60, offset % 60);
+	strbuf_addf(buf, "%"PRIuMAX" %c%02d%02d", (uintmax_t)date, sign, offset / 60, offset % 60);
 }
 
 /*

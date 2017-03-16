@@ -1854,8 +1854,8 @@ static int try_delta(struct unpacked *trg, struct unpacked *src,
 			die("object %s cannot be read",
 			    sha1_to_hex(trg_entry->idx.sha1));
 		if (sz != trg_size)
-			die("object %s inconsistent object length (%lu vs %lu)",
-			    sha1_to_hex(trg_entry->idx.sha1), sz, trg_size);
+			die("object %s inconsistent object length (%" PRIuMAX  "%" PRIuMAX ")",
+			    sha1_to_hex(trg_entry->idx.sha1), (uintmax_t)sz, (uintmax_t)trg_size);
 		*mem_usage += sz;
 	}
 	if (!src->data) {
@@ -1880,8 +1880,8 @@ static int try_delta(struct unpacked *trg, struct unpacked *src,
 			    sha1_to_hex(src_entry->idx.sha1));
 		}
 		if (sz != src_size)
-			die("object %s inconsistent object length (%lu vs %lu)",
-			    sha1_to_hex(src_entry->idx.sha1), sz, src_size);
+			die("object %s inconsistent object length (%" PRIuMAX " vs %" PRIuMAX " )",
+			    sha1_to_hex(src_entry->idx.sha1), (uintmax_t)sz, (uintmax_t)src_size);
 		*mem_usage += sz;
 	}
 	if (!src->index) {

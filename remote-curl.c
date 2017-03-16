@@ -1,4 +1,5 @@
 #include "cache.h"
+#include <inttypes.h>
 #include "remote.h"
 #include "strbuf.h"
 #include "walker.h"
@@ -803,7 +804,7 @@ static int fetch_git(struct discovery *heads,
 	if (!options.progress)
 		argv_array_push(&args, "--no-progress");
 	if (options.depth)
-		argv_array_pushf(&args, "--depth=%lu", options.depth);
+		argv_array_pushf(&args, "--depth=%" PRIuMAX, (uintmax_t)options.depth);
 	if (options.deepen_since)
 		argv_array_pushf(&args, "--shallow-since=%s", options.deepen_since);
 	for (i = 0; i < options.deepen_not.nr; i++)

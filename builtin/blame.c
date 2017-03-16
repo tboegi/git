@@ -1853,7 +1853,7 @@ static const char *format_time(size_t time, const char *tz_str,
 
 	strbuf_reset(&time_buf);
 	if (show_raw_time) {
-		strbuf_addf(&time_buf, "%lu %s", time, tz_str);
+		strbuf_addf(&time_buf, "%" PRIuMAX " %s", (uintmax_t)time, tz_str);
 	}
 	else {
 		const char *time_str;
