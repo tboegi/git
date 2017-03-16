@@ -317,7 +317,7 @@ size_t sizeof_delta_index(struct delta_index *index)
 void *
 create_delta(const struct delta_index *index,
 	     const void *trg_buf, size_t trg_size,
-	     size_t *delta_size, unsigned long max_size)
+	     size_t *delta_size, size_t max_size)
 {
 	unsigned int i, outpos, outsize, moff, msize, val;
 	int inscnt;

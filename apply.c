@@ -436,7 +436,7 @@ static int read_patch_file(struct strbuf *sb, int fd)
 	return 0;
 }
 
-static size_t linelen(const char *buffer, unsigned long size)
+static size_t linelen(const char *buffer, size_t size)
 {
 	size_t len = 0;
 	while (size--) {
@@ -1408,7 +1408,7 @@ static int parse_num(const char *line, size_t *p)
 }
 
 static int parse_range(const char *line, int len, int offset, const char *expect,
-		       size_t *p1, unsigned long *p2)
+		       size_t *p1, size_t *p2)
 {
 	int digits, ex;
 

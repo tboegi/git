@@ -45,7 +45,7 @@ int tree_entry_gently(struct tree_desc *, struct name_entry *);
 void *fill_tree_descriptor(struct tree_desc *desc, const unsigned char *sha1);
 
 struct traverse_info;
-typedef int (*traverse_callback_t)(int n, size_t mask, unsigned long dirmask, struct name_entry *entry, struct traverse_info *);
+typedef int (*traverse_callback_t)(int n, size_t mask, size_t dirmask, struct name_entry *entry, struct traverse_info *);
 int traverse_trees(int n, struct tree_desc *t, struct traverse_info *info);
 
 enum follow_symlinks_result {

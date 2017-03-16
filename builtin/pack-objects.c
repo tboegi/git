@@ -121,7 +121,7 @@ static void *get_delta(struct object_entry *entry)
 	return delta_buf;
 }
 
-static size_t do_compress(void **pptr, unsigned long size)
+static size_t do_compress(void **pptr, size_t size)
 {
 	git_zstream stream;
 	void *in, *out;
@@ -1751,7 +1751,7 @@ struct unpacked {
 	unsigned depth;
 };
 
-static int delta_cacheable(size_t src_size, unsigned long trg_size,
+static int delta_cacheable(size_t src_size, size_t trg_size,
 			   size_t delta_size)
 {
 	if (max_delta_cache_size && delta_cache_size + delta_size > max_delta_cache_size)

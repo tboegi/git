@@ -46,8 +46,8 @@ do { \
 #define XDL_LE32_GET(p, v) \
 do { \
 	unsigned char const *__p = (unsigned char const *) (p); \
-	(v) = (size_t) __p[0] | ((unsigned long) __p[1]) << 8 | \
-		((size_t) __p[2]) << 16 | ((unsigned long) __p[3]) << 24; \
+	(v) = (size_t) __p[0] | ((size_t) __p[1]) << 8 | \
+		((size_t) __p[2]) << 16 | ((size_t) __p[3]) << 24; \
 } while (0)
 
 

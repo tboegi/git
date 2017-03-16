@@ -221,7 +221,7 @@ static int xdl_prepare_ctx(unsigned int pass, mmfile_t *mf, long narec, xpparam_
 
 	if (!(rindex = (long *) xdl_malloc((nrec + 1) * sizeof(long))))
 		goto abort;
-	if (!(ha = (size_t *) xdl_malloc((nrec + 1) * sizeof(unsigned long))))
+	if (!(ha = (size_t *) xdl_malloc((nrec + 1) * sizeof(size_t))))
 		goto abort;
 
 	xdf->nrec = nrec;

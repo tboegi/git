@@ -150,7 +150,7 @@ int git_inflate(git_zstream *strm, int flush)
 #define deflateBound(c,s)  ((s) + (((s) + 7) >> 3) + (((s) + 63) >> 6) + 11)
 #endif
 
-size_t git_deflate_bound(git_zstream *strm, unsigned long size)
+size_t git_deflate_bound(git_zstream *strm, size_t size)
 {
 	return deflateBound(&strm->z, size);
 }

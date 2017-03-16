@@ -845,7 +845,7 @@ void datestamp(struct strbuf *out)
  * Relative time update (eg "2 days ago").  If we haven't set the time
  * yet, we need to set it from current time.
  */
-static size_t update_tm(struct tm *tm, struct tm *now, unsigned long sec)
+static size_t update_tm(struct tm *tm, struct tm *now, size_t sec)
 {
 	time_t n;
 

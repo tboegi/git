@@ -1420,8 +1420,8 @@ LONG __cdecl _InterlockedExchange(LONG volatile *Target, LONG Value);
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-unsigned char _BitScanForward(size_t *index, unsigned long mask);
-unsigned char _BitScanReverse(size_t *index, unsigned long mask);
+unsigned char _BitScanForward(size_t *index, size_t mask);
+unsigned char _BitScanReverse(size_t *index, size_t mask);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

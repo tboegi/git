@@ -43,7 +43,7 @@ extern size_t sizeof_delta_index(struct delta_index *index);
 extern void *
 create_delta(const struct delta_index *index,
 	     const void *buf, size_t bufsize,
-	     size_t *delta_size, unsigned long max_delta_size);
+	     size_t *delta_size, size_t max_delta_size);
 
 /*
  * diff_delta: create a delta from source buffer to target buffer
@@ -56,7 +56,7 @@ create_delta(const struct delta_index *index,
 static inline void *
 diff_delta(const void *src_buf, size_t src_bufsize,
 	   const void *trg_buf, size_t trg_bufsize,
-	   size_t *delta_size, unsigned long max_delta_size)
+	   size_t *delta_size, size_t max_delta_size)
 {
 	struct delta_index *index = create_delta_index(src_buf, src_bufsize);
 	if (index) {

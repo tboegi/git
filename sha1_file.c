@@ -1800,7 +1800,7 @@ void *map_sha1_file(const unsigned char *sha1, size_t *size)
 }
 
 size_t unpack_object_header_buffer(const unsigned char *buf,
-		size_t len, enum object_type *type, unsigned long *sizep)
+		size_t len, enum object_type *type, size_t *sizep)
 {
 	unsigned shift;
 	size_t size, c;
@@ -2010,7 +2010,7 @@ int parse_sha1_header(const char *hdr, size_t *sizep)
 	return parse_sha1_header_extended(hdr, &oi, LOOKUP_REPLACE_OBJECT);
 }
 
-static void *unpack_sha1_file(void *map, size_t mapsize, enum object_type *type, unsigned long *size, const unsigned char *sha1)
+static void *unpack_sha1_file(void *map, size_t mapsize, enum object_type *type, size_t *size, const unsigned char *sha1)
 {
 	int ret;
 	git_zstream stream;

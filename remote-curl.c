@@ -646,7 +646,7 @@ retry:
 		if (options.verbosity > 1) {
 			fprintf(stderr, "POST %s (gzip %lu to %lu bytes)\n",
 				rpc->service_name,
-				(size_t)rpc->len, (unsigned long)gzip_size);
+				(size_t)rpc->len, (size_t)gzip_size);
 			fflush(stderr);
 		}
 	} else {

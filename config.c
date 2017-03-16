@@ -1389,7 +1389,7 @@ int git_env_bool(const char *k, int def)
  * Parse environment variable 'k' as ulong with possibly a unit
  * suffix; if missing, use the default value 'val'.
  */
-size_t git_env_ulong(const char *k, unsigned long val)
+size_t git_env_ulong(const char *k, size_t val)
 {
 	const char *v = getenv(k);
 	if (v && !git_parse_ulong(v, &val))

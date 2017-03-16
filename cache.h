@@ -60,7 +60,7 @@ void git_deflate_end(git_zstream *);
 int git_deflate_abort(git_zstream *);
 int git_deflate_end_gently(git_zstream *);
 int git_deflate(git_zstream *, int flush);
-size_t git_deflate_bound(git_zstream *, unsigned long);
+size_t git_deflate_bound(git_zstream *, size_t);
 
 /* The length in bytes and in hex digits of an object name (SHA-1 value). */
 #define GIT_SHA1_RAWSZ 20
@@ -1214,7 +1214,7 @@ extern int force_object_loose(const unsigned char *sha1, time_t mtime);
 extern int git_open_cloexec(const char *name, int flags);
 #define git_open(name) git_open_cloexec(name, O_RDONLY)
 extern void *map_sha1_file(const unsigned char *sha1, size_t *size);
-extern int unpack_sha1_header(git_zstream *stream, unsigned char *map, size_t mapsize, void *buffer, unsigned long bufsiz);
+extern int unpack_sha1_header(git_zstream *stream, unsigned char *map, size_t mapsize, void *buffer, size_t bufsiz);
 extern int parse_sha1_header(const char *hdr, size_t *sizep);
 
 /* global flag to enable extra checks when accessing packed objects */
@@ -1685,7 +1685,7 @@ extern off_t find_pack_entry_one(const unsigned char *sha1, struct packed_git *)
 
 extern int is_pack_valid(struct packed_git *);
 extern void *unpack_entry(struct packed_git *, off_t, enum object_type *, size_t *);
-extern size_t unpack_object_header_buffer(const unsigned char *buf, unsigned long len, enum object_type *type, unsigned long *sizep);
+extern size_t unpack_object_header_buffer(const unsigned char *buf, size_t len, enum object_type *type, unsigned long *sizep);
 extern size_t get_size_from_delta(struct packed_git *, struct pack_window **, off_t);
 extern int unpack_object_header(struct packed_git *, struct pack_window **, off_t *, size_t *);
 
@@ -1852,7 +1852,7 @@ extern int git_config_rename_section(const char *, const char *);
 extern int git_config_rename_section_in_file(const char *, const char *, const char *);
 extern const char *git_etc_gitconfig(void);
 extern int git_env_bool(const char *, int);
-extern size_t git_env_ulong(const char *, unsigned long);
+extern size_t git_env_ulong(const char *, size_t);
 extern int git_config_system(void);
 extern int config_error_nonbool(const char *);
 #if defined(__GNUC__)

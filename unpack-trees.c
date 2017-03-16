@@ -862,7 +862,7 @@ static void debug_unpack_callback(int n,
 		debug_name_entry(i, names + i);
 }
 
-static int unpack_callback(int n, size_t mask, unsigned long dirmask, struct name_entry *names, struct traverse_info *info)
+static int unpack_callback(int n, size_t mask, size_t dirmask, struct name_entry *names, struct traverse_info *info)
 {
 	struct cache_entry *src[MAX_UNPACK_TREES + 1] = { NULL, };
 	struct unpack_trees_options *o = info->data;

@@ -408,7 +408,7 @@ static struct diff_tempfile {
 	struct tempfile tempfile;
 } diff_temp[2];
 
-typedef size_t (*sane_truncate_fn)(char *line, unsigned long len);
+typedef size_t (*sane_truncate_fn)(char *line, size_t len);
 
 struct emit_callback {
 	int color_diff;
@@ -1240,7 +1240,7 @@ const char *diff_line_prefix(struct diff_options *opt)
 	return msgbuf->buf;
 }
 
-static size_t sane_truncate_line(struct emit_callback *ecb, char *line, unsigned long len)
+static size_t sane_truncate_line(struct emit_callback *ecb, char *line, size_t len)
 {
 	const char *cp;
 	size_t allot;
