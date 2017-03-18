@@ -5,7 +5,7 @@
 #define BULK_CHECKIN_H
 
 extern int index_bulk_checkin(unsigned char sha1[],
-			      int fd, size_t size, enum object_type type,
+			      int fd, off_t size, enum object_type type,
 			      const char *path, unsigned flags);
 
 extern void plug_bulk_checkin(void);

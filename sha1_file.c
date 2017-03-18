@@ -3561,7 +3561,7 @@ static int index_core(unsigned char *sha1, int fd, size_t size,
  * binary blobs, they generally do not want to get any conversion, and
  * callers should avoid this code path when filters are requested.
  */
-static int index_stream(unsigned char *sha1, int fd, size_t size,
+static int index_stream(unsigned char *sha1, int fd, off_t size,
 			enum object_type type, const char *path,
 			unsigned flags)
 {
@@ -3586,7 +3586,7 @@ int index_fd(unsigned char *sha1, int fd, struct stat *st,
 		ret = index_core(sha1, fd, xsize_t(st->st_size), type, path,
 				 flags);
 	else
-		ret = index_stream(sha1, fd, xsize_t(st->st_size), type, path,
+		ret = index_stream(sha1, fd, st->st_size, type, path,
 				   flags);
 	close(fd);
 	return ret;

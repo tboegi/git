@@ -183,7 +183,7 @@ static void prepare_to_stream(struct bulk_checkin_state *state,
 
 static int deflate_to_pack(struct bulk_checkin_state *state,
 			   unsigned char result_sha1[],
-			   int fd, size_t size,
+			   int fd, off_t size,
 			   enum object_type type, const char *path,
 			   unsigned flags)
 {
@@ -252,7 +252,7 @@ static int deflate_to_pack(struct bulk_checkin_state *state,
 }
 
 int index_bulk_checkin(unsigned char *sha1,
-		       int fd, size_t size, enum object_type type,
+		       int fd, off_t size, enum object_type type,
 		       const char *path, unsigned flags)
 {
 	int status = deflate_to_pack(&state, sha1, fd, size, type,
