@@ -446,7 +446,7 @@ static void *unpack_entry_data(off_t offset, size_t size,
 	int hdrlen;
 
 	if (!is_delta_type(type)) {
-		hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %" "PRIuMAX", typename(type), (uintmax_t)size) + 1;
+		hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %" PRIuMAX "", typename(type), (uintmax_t)size) + 1;
 		git_SHA1_Init(&c);
 		git_SHA1_Update(&c, hdr, hdrlen);
 	} else
