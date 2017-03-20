@@ -464,7 +464,7 @@ static char *prepare_push_cert_nonce(const char *path, size_t stamp)
 	strbuf_release(&buf);
 
 	/* RFC 2104 5. HMAC-SHA1-80 */
-	strbuf_addf(&buf, "%lu-%.*s", stamp, 20, sha1_to_hex(sha1));
+	strbuf_addf(&buf, "%lu-%.*s", xulong_t(stamp), 20, sha1_to_hex(sha1));
 	return strbuf_detach(&buf, NULL);
 }
 

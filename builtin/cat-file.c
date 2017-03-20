@@ -86,7 +86,7 @@ static int cat_one_file(int opt, const char *exp_type, const char *obj_name,
 		oi.sizep = &size;
 		if (sha1_object_info_extended(oid.hash, &oi, flags) < 0)
 			die("git cat-file: could not get object info");
-		printf("%lu\n", size);
+		printf("%" PRIuMAX "\n", (uintmax_t)size);
 		return 0;
 
 	case 'e':

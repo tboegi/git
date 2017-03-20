@@ -1577,10 +1577,10 @@ static void show_pack_info(int stat_only)
 			chain_histogram[obj_stat[i].delta_depth - 1]++;
 		if (stat_only)
 			continue;
-		printf("%s %-6s %lu %lu %"PRIuMAX,
+		printf("%s %-6s %" PRIuMAX " %" PRIuMAX" %"PRIuMAX,
 		       sha1_to_hex(obj->idx.sha1),
-		       typename(obj->real_type), obj->size,
-		       (size_t)(obj[1].idx.offset - obj->idx.offset),
+		       typename(obj->real_type), (uintmax_t)obj->size,
+		       (uintmax_t)(obj[1].idx.offset - obj->idx.offset),
 		       (uintmax_t)obj->idx.offset);
 		if (is_delta_type(obj->type)) {
 			struct object_entry *bobj = &objects[obj_stat[i].base_object_no];

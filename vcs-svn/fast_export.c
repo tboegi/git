@@ -73,8 +73,8 @@ void fast_export_begin_note(uint32_t revision, const char *author,
 	static int firstnote = 1;
 	size_t loglen = strlen(log);
 	printf("commit %s\n", note_ref);
-	printf("committer %s <%s@%s> %lu +0000\n", author, author, "local", timestamp);
-	printf("data %"PRIuMAX"\n", (uintmax_t)loglen);
+	printf("committer %s <%s@%s> %lu +0000\n", author, author, "local", xulong_t(timestamp));
+	printf("data %" PRIuMAX "\n", (uintmax_t)loglen);
 	fwrite(log, loglen, 1, stdout);
 	if (firstnote) {
 		if (revision > 1)
@@ -110,7 +110,7 @@ void fast_export_begin_commit(uint32_t revision, const char *author,
 	printf("committer %s <%s@%s> %lu +0000\n",
 		   *author ? author : "nobody",
 		   *author ? author : "nobody",
-		   *uuid ? uuid : "local", timestamp);
+		   *uuid ? uuid : "local", xulong_t(timestamp));
 	printf("data %"PRIuMAX"\n",
 		(uintmax_t) (log->len + strlen(gitsvnline)));
 	fwrite(log->buf, log->len, 1, stdout);

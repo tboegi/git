@@ -665,7 +665,7 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 
 	if (verbose) {
 		fprintf(stderr, "There are %lu packs available in alt-odbs.\n",
-			(size_t)pack_list_size(altodb_packs));
+			xulong_t(pack_list_size(altodb_packs)));
 		fprintf(stderr, "The smallest (bytewise) set of packs is:\n");
 		pl = min;
 		while (pl) {
@@ -674,10 +674,10 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 		}
 		fprintf(stderr, "containing %lu duplicate objects "
 				"with a total size of %lukb.\n",
-			(size_t)get_pack_redundancy(min),
-			(size_t)pack_set_bytecount(min)/1024);
+			xulong_t(get_pack_redundancy(min)),
+			xulong_t(pack_set_bytecount(min)/1024));
 		fprintf(stderr, "A total of %lu unique objects were considered.\n",
-			(size_t)all_objects->size);
+			xulong_t(all_objects->size));
 		fprintf(stderr, "Redundant packs (with indexes):\n");
 	}
 	pl = red = pack_list_difference(local_packs, min);
@@ -689,7 +689,7 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 	}
 	if (verbose)
 		fprintf(stderr, "%luMB of redundant packs in total.\n",
-			(size_t)pack_set_bytecount(red)/(1024*1024));
+			xulong_t(pack_set_bytecount(red)/(1024*1024)));
 
 	return 0;
 }

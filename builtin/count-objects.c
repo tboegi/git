@@ -143,13 +143,13 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 				    (uintmax_t)(size_garbage / 1024));
 		}
 
-		printf("count: %lu\n", loose);
+		printf("count: %lu\n", xulong_t(loose));
 		printf("size: %s\n", loose_buf.buf);
-		printf("in-pack: %lu\n", packed);
-		printf("packs: %lu\n", num_pack);
+		printf("in-pack: %lu\n", xulong_t(packed));
+		printf("packs: %lu\n", xulong_t(num_pack));
 		printf("size-pack: %s\n", pack_buf.buf);
-		printf("prune-packable: %lu\n", packed_loose);
-		printf("garbage: %lu\n", garbage);
+		printf("prune-packable: %lu\n", xulong_t(packed_loose));
+		printf("garbage: %lu\n", xulong_t(garbage));
 		printf("size-garbage: %s\n", garbage_buf.buf);
 		foreach_alt_odb(print_alternate, NULL);
 		strbuf_release(&loose_buf);
@@ -161,8 +161,8 @@ int cmd_count_objects(int argc, const char **argv, const char *prefix)
 			strbuf_humanise_bytes(&buf, loose_size);
 		else
 			strbuf_addf(&buf, "%lu kilobytes",
-				    (size_t)(loose_size / 1024));
-		printf("%lu objects, %s\n", loose, buf.buf);
+				    xulong_t(loose_size / 1024));
+		printf("%lu objects, %s\n", xulong_t(loose), buf.buf);
 		strbuf_release(&buf);
 	}
 	return 0;

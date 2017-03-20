@@ -400,7 +400,7 @@ static void describe(const char *arg, int last_one)
 				prio_names[t->name->prio],
 				t->depth, t->name->path);
 		}
-		fprintf(stderr, _("traversed %lu commits\n"), seen_commits);
+		fprintf(stderr, _("traversed %" PRIuMAX " commits\n"), (uintmax_t)(seen_commits));
 		if (gave_up_on) {
 			fprintf(stderr,
 				_("more than %i tags found; listed %i most recent\n"

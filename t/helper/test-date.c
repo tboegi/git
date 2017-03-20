@@ -46,7 +46,7 @@ static void parse_dates(const char **argv, struct timeval *now)
 	struct strbuf result = STRBUF_INIT;
 
 	for (; *argv; argv++) {
-		size_t t;
+		unsigned long t;
 		int tz;
 
 		strbuf_reset(&result);

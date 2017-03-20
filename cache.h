@@ -1828,7 +1828,7 @@ extern void git_config(config_fn_t fn, void *);
 extern int git_config_with_options(config_fn_t fn, void *,
 				   struct git_config_source *config_source,
 				   int respect_includes);
-extern int git_parse_ulong(const char *, size_t *);
+extern int git_parse_ulong(const char *, unsigned long *);
 extern int git_parse_maybe_bool(const char *);
 extern int git_config_int(const char *, const char *);
 extern int64_t git_config_int64(const char *, const char *);
@@ -1852,7 +1852,7 @@ extern int git_config_rename_section(const char *, const char *);
 extern int git_config_rename_section_in_file(const char *, const char *, const char *);
 extern const char *git_etc_gitconfig(void);
 extern int git_env_bool(const char *, int);
-extern size_t git_env_ulong(const char *, size_t);
+extern unsigned long git_env_ulong(const char *, unsigned long);
 extern int git_config_system(void);
 extern int config_error_nonbool(const char *);
 #if defined(__GNUC__)
@@ -1937,7 +1937,7 @@ extern void git_configset_clear(struct config_set *cs);
 extern int git_configset_get_string_const(struct config_set *cs, const char *key, const char **dest);
 extern int git_configset_get_string(struct config_set *cs, const char *key, char **dest);
 extern int git_configset_get_int(struct config_set *cs, const char *key, int *dest);
-extern int git_configset_get_ulong(struct config_set *cs, const char *key, size_t *dest);
+extern int git_configset_get_ulong(struct config_set *cs, const char *key, unsigned long *dest);
 extern int git_configset_get_bool(struct config_set *cs, const char *key, int *dest);
 extern int git_configset_get_bool_or_int(struct config_set *cs, const char *key, int *is_bool, int *dest);
 extern int git_configset_get_maybe_bool(struct config_set *cs, const char *key, int *dest);
@@ -1950,7 +1950,7 @@ extern void git_config_iter(config_fn_t fn, void *data);
 extern int git_config_get_string_const(const char *key, const char **dest);
 extern int git_config_get_string(const char *key, char **dest);
 extern int git_config_get_int(const char *key, int *dest);
-extern int git_config_get_ulong(const char *key, size_t *dest);
+extern int git_config_get_ulong(const char *key, unsigned long *dest);
 extern int git_config_get_bool(const char *key, int *dest);
 extern int git_config_get_bool_or_int(const char *key, int *is_bool, int *dest);
 extern int git_config_get_maybe_bool(const char *key, int *dest);

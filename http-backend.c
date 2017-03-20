@@ -13,7 +13,7 @@ static const char content_type[] = "Content-Type";
 static const char content_length[] = "Content-Length";
 static const char last_modified[] = "Last-Modified";
 static int getanyfile = 1;
-static size_t max_request_buffer = 10 * 1024 * 1024;
+static unsigned long  max_request_buffer = 10 * 1024 * 1024;
 
 static struct string_list *query_params;
 

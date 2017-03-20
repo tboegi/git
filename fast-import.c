@@ -280,7 +280,7 @@ struct recent_command {
 };
 
 /* Configured limits on output */
-static size_t max_depth = 10;
+static unsigned long max_depth = 10;
 static off_t max_packsize;
 static int unpack_limit = 100;
 static int force_update;
@@ -292,9 +292,9 @@ static uintmax_t object_count_by_type[1 << TYPE_BITS];
 static uintmax_t duplicate_count_by_type[1 << TYPE_BITS];
 static uintmax_t delta_count_by_type[1 << TYPE_BITS];
 static uintmax_t delta_count_attempts_by_type[1 << TYPE_BITS];
-static size_t object_count;
-static size_t branch_count;
-static size_t branch_load_count;
+static unsigned long object_count;
+static unsigned long branch_count;
+static unsigned long branch_load_count;
 static int failure;
 static FILE *pack_edges;
 static unsigned int show_stats = 1;
@@ -343,9 +343,9 @@ static struct strbuf old_tree = STRBUF_INIT;
 static struct strbuf new_tree = STRBUF_INIT;
 
 /* Branch data */
-static size_t max_active_branches = 5;
-static size_t cur_active_branches;
-static size_t branch_table_sz = 1039;
+static unsigned long max_active_branches = 5;
+static unsigned long cur_active_branches;
+static unsigned long branch_table_sz = 1039;
 static struct branch **branch_table;
 static struct branch *active_branches;
 
@@ -410,7 +410,7 @@ static void write_crash_report(const char *err)
 	char *loc = git_pathdup("fast_import_crash_%"PRIuMAX, (uintmax_t) getpid());
 	FILE *rpt = fopen(loc, "w");
 	struct branch *b;
-	size_t lu;
+	unsigned long lu;
 	struct recent_command *rc;
 
 	if (!rpt) {
@@ -598,7 +598,7 @@ static struct object_entry *insert_object(unsigned char *sha1)
 static void invalidate_pack_id(unsigned int id)
 {
 	unsigned int h;
-	size_t lu;
+	unsigned long lu;
 	struct tag *t;
 
 	for (h = 0; h < ARRAY_SIZE(object_table); h++) {
@@ -1089,7 +1089,7 @@ static int store_object(
 	git_SHA_CTX c;
 	git_zstream s;
 
-	hdrlen = xsnprintf((char *)hdr, sizeof(hdr), "%s %"PRIuMAX,
+	hdrlen = xsnprintf((char *)hdr, sizeof(hdr), "%s %" PRIuMAX,
 			   typename(type), (uintmax_t)dat->len) + 1;
 	git_SHA1_Init(&c);
 	git_SHA1_Update(&c, hdr, hdrlen);
@@ -2037,7 +2037,7 @@ static int parse_data(struct strbuf *sb, uintmax_t limit, uintmax_t *len_res)
 		while (n < length) {
 			size_t s = strbuf_fread(sb, length - n, stdin);
 			if (!s && feof(stdin))
-				die("EOF in data (%"PRIuMAX" bytes remaining)",
+				die("EOF in data (%" PRIuMAX "bytes remaining)",
 					(uintmax_t)(length - n));
 			n += s;
 		}
@@ -2976,7 +2976,7 @@ static void cat_blob(struct object_entry *oe, unsigned char sha1[20])
 		die("Object %s is a %s but a blob was expected.",
 		    sha1_to_hex(sha1), typename(type));
 	strbuf_reset(&line);
-	strbuf_addf(&line, "%s %s %"PRIuMAX"\n", sha1_to_hex(sha1),
+	strbuf_addf(&line, "%s %s %" PRIuMAX "\n", sha1_to_hex(sha1),
 						typename(type), (uintmax_t)size);
 	cat_blob_write(line.buf, line.len);
 	strbuf_release(&line);
@@ -3283,11 +3283,11 @@ static void option_export_pack_edges(const char *edges)
 static int parse_one_option(const char *option)
 {
 	if (skip_prefix(option, "max-pack-size=", &option)) {
-		size_t v;
+		unsigned long v;
 		if (!git_parse_ulong(option, &v))
 			return 0;
 		if (v < 8192) {
-			warning("max-pack-size is now in bytes, assuming --max-pack-size=%"PRIuMAX"m", v);
+			warning("max-pack-size is now in bytes, assuming --max-pack-size=%" PRIuMAX "m", (uintmax_t)v);
 			v *= 1024 * 1024;
 		} else if (v < 1024 * 1024) {
 			warning("minimum max-pack-size is 1 MiB");
@@ -3295,10 +3295,10 @@ static int parse_one_option(const char *option)
 		}
 		max_packsize = v;
 	} else if (skip_prefix(option, "big-file-threshold=", &option)) {
-		size_t v;
+		unsigned long v;
 		if (!git_parse_ulong(option, &v))
 			return 0;
-		big_file_threshold = v;
+		big_file_threshold = xsize_t(v);
 	} else if (skip_prefix(option, "depth=", &option)) {
 		option_depth(option);
 	} else if (skip_prefix(option, "active-branches=", &option)) {
@@ -3375,7 +3375,7 @@ static void git_pack_config(void)
 {
 	int indexversion_value;
 	int limit;
-	size_t packsizelimit_value;
+	unsigned long packsizelimit_value;
 
 	if (!git_config_get_ulong("pack.depth", &max_depth)) {
 		if (max_depth > MAX_DEPTH)
@@ -3532,7 +3532,7 @@ int cmd_main(int argc, const char **argv)
 		fprintf(stderr, "      marks:     %10" PRIuMAX " (%10" PRIuMAX " unique    )\n", (((uintmax_t)1) << marks->shift) * 1024, marks_set_count);
 		fprintf(stderr, "      atoms:     %10u\n", atom_cnt);
 		fprintf(stderr, "Memory total:    %10" PRIuMAX " KiB\n", (total_allocd + alloc_count*sizeof(struct object_entry))/1024);
-		fprintf(stderr, "       pools:    %10lu KiB\n", (size_t)(total_allocd/1024));
+		fprintf(stderr, "       pools:    %10lu KiB\n", xulong_t(total_allocd/1024));
 		fprintf(stderr, "     objects:    %10" PRIuMAX " KiB\n", (alloc_count*sizeof(struct object_entry))/1024);
 		fprintf(stderr, "---------------------------------------------------------------------\n");
 		pack_report();

@@ -248,7 +248,7 @@ static void export_blob(const unsigned char *sha1)
 
 	mark_next_object(object);
 
-	printf("blob\nmark :%"PRIu32"\ndata %lu\n", last_idnum, size);
+	printf("blob\nmark :%"PRIu32"\ndata %" PRIuMAX "\n", last_idnum, (uintmax_t)size);
 	if (size && fwrite(buf, size, 1, stdout) != 1)
 		die_errno ("Could not write blob '%s'", sha1_to_hex(sha1));
 	printf("\n");
