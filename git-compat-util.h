@@ -876,6 +876,13 @@ static inline char *xstrdup_or_null(const char *str)
 	return str ? xstrdup(str) : NULL;
 }
 
+static inline unsigned long  xulong_t(off_t len)
+{
+	if (len > (unsigned long) len)
+		die("Cannot convert to ulong %s:%d", __FILE__, __LINE__);
+	return (unsigned long)len;
+}
+
 static inline size_t xsize_t(off_t len)
 {
 	if (len > (size_t) len)

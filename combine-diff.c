@@ -693,7 +693,7 @@ static void show_parent_lno(struct sline *sline, size_t l0, size_t l1, int n, un
 {
 	l0 = sline[l0].p_lno[n];
 	l1 = sline[l1].p_lno[n];
-	printf(" -%lu,%lu", l0, l1-l0-null_context);
+	printf(" -%lu,%lu", xulong_t(l0), xulong_t(l1-l0-null_context));
 }
 
 static int hunk_comment_line(const char *bol)
@@ -779,7 +779,7 @@ static void dump_sline(struct sline *sline, const char *line_prefix,
 		for (i = 0; i <= num_parent; i++) putchar(combine_marker);
 		for (i = 0; i < num_parent; i++)
 			show_parent_lno(sline, lno, hunk_end, i, null_context);
-		printf(" +%lu,%lu ", lno+1, rlines);
+		printf(" +%lu,%lu ", xulong_t(lno+1), xulong_t(rlines));
 		for (i = 0; i <= num_parent; i++) putchar(combine_marker);
 
 		if (hunk_comment) {

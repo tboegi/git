@@ -135,7 +135,7 @@ void show_date_relative(size_t time, int tz,
 	if (diff < 365) {
 		strbuf_addf(timebuf,
 			 Q_("%"PRIuMAX" month ago", "%"PRIuMAX" months ago", (uintmax_t)(diff + 15) / 30),
-			 (diff + 15) / 30);
+			(uintmax_t)((diff + 15) / 30));
 		return;
 	}
 	/* Give years and months for 5 years or so */

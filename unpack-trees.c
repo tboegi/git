@@ -855,7 +855,7 @@ static void debug_unpack_callback(int n,
 {
 	int i;
 	printf("* unpack mask %lu, dirmask %lu, cnt %d ",
-	       mask, dirmask, n);
+	       xulong_t(mask), xulong_t(dirmask), n);
 	debug_path(info);
 	putchar('\n');
 	for (i = 0; i < n; i++)

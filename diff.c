@@ -2255,7 +2255,7 @@ static void emit_binary_diff_body(FILE *file, mmfile_t *one, mmfile_t *two,
 	}
 
 	if (delta && delta_size < deflate_size) {
-		fprintf(file, "%sdelta %lu\n", prefix, orig_size);
+	  fprintf(file, "%sdelta %lu\n", prefix, xulong_t(orig_size));
 		free(deflated);
 		data = delta;
 		data_size = delta_size;

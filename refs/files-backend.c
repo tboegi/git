@@ -3977,7 +3977,7 @@ static int expire_reflog_ent(unsigned char *osha1, unsigned char *nsha1,
 		if (cb->newlog) {
 			fprintf(cb->newlog, "%s %s %s %lu %+05d\t%s",
 				sha1_to_hex(osha1), sha1_to_hex(nsha1),
-				email, timestamp, tz, message);
+				email, xulong_t(timestamp), tz, message);
 			hashcpy(cb->last_kept_sha1, nsha1);
 		}
 		if (cb->flags & EXPIRE_REFLOGS_VERBOSE)
