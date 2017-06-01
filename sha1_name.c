@@ -455,7 +455,7 @@ int for_each_abbrev(const char *prefix, each_abbrev_fn fn, void *cb_data)
  * ways to do this quickly with fls() or __builtin_clzl(), but speed is
  * probably not a big deal here.
  */
-static unsigned msb(unsigned long val)
+static unsigned msb(size_t val)
 {
 	unsigned r = 0;
 	while (val >>= 1)
@@ -468,7 +468,7 @@ int find_unique_abbrev_r(char *hex, const unsigned char *sha1, int len)
 	int status, exists;
 
 	if (len < 0) {
-		unsigned long count = approximate_object_count();
+		size_t count = approximate_object_count();
 		/*
 		 * Add one because the MSB only tells us the highest bit set,
 		 * not including the value of all the _other_ bits (so "15"

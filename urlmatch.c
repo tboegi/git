@@ -283,7 +283,7 @@ static char *url_normalize_1(const char *url, struct url_info *out_info, char al
 			 * 0 is not allowed because that means "next available"
 			 * on just about every system and therefore cannot be used
 			 */
-			unsigned long pnum = 0;
+			size_t pnum = 0;
 			spanned = strspn(url, URL_DIGIT);
 			if (spanned < slash_ptr - url) {
 				/* port number has invalid characters */

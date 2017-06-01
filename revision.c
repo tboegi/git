@@ -217,7 +217,7 @@ static struct commit *handle_commit(struct rev_info *revs,
 	const char *name = entry->name;
 	const char *path = entry->path;
 	unsigned int mode = entry->mode;
-	unsigned long flags = object->flags;
+	size_t flags = object->flags;
 
 	/*
 	 * Tag object? Look what it points to..

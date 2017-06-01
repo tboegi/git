@@ -656,7 +656,7 @@ retry:
 		if (options.verbosity > 1) {
 			fprintf(stderr, "POST %s (gzip %lu to %lu bytes)\n",
 				rpc->service_name,
-				(unsigned long)rpc->len, (unsigned long)gzip_size);
+				xulong_t(rpc->len), xulong_t(gzip_size));
 			fflush(stderr);
 		}
 	} else {
@@ -667,7 +667,7 @@ retry:
 		curl_easy_setopt(slot->curl, CURLOPT_POSTFIELDSIZE_LARGE, xcurl_off_t(rpc->len));
 		if (options.verbosity > 1) {
 			fprintf(stderr, "POST %s (%lu bytes)\n",
-				rpc->service_name, (unsigned long)rpc->len);
+				rpc->service_name, xulong_t(rpc->len));
 			fflush(stderr);
 		}
 	}

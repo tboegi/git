@@ -246,7 +246,7 @@ static struct pack_list * pack_list_difference(const struct pack_list *A,
 
 static void cmp_two_packs(struct pack_list *p1, struct pack_list *p2)
 {
-	unsigned long p1_off = 0, p2_off = 0, p1_step, p2_step;
+	size_t p1_off = 0, p2_off = 0, p1_step, p2_step;
 	const unsigned char *p1_base, *p2_base;
 	struct llist_item *p1_hint = NULL, *p2_hint = NULL;
 
@@ -354,7 +354,7 @@ static int is_superset(struct pack_list *pl, struct llist *list)
 static size_t sizeof_union(struct packed_git *p1, struct packed_git *p2)
 {
 	size_t ret = 0;
-	unsigned long p1_off = 0, p2_off = 0, p1_step, p2_step;
+	size_t p1_off = 0, p2_off = 0, p1_step, p2_step;
 	const unsigned char *p1_base, *p2_base;
 
 	p1_base = p1->index_data;
@@ -541,7 +541,7 @@ static void scan_alt_odb_packs(void)
 static struct pack_list * add_pack(struct packed_git *p)
 {
 	struct pack_list l;
-	unsigned long off = 0, step;
+	size_t off = 0, step;
 	const unsigned char *base;
 
 	if (!p->pack_local && !(alt_odb || verbose))
@@ -666,7 +666,7 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 
 	if (verbose) {
 		fprintf(stderr, "There are %lu packs available in alt-odbs.\n",
-			(unsigned long)pack_list_size(altodb_packs));
+			xulong_t(pack_list_size(altodb_packs)));
 		fprintf(stderr, "The smallest (bytewise) set of packs is:\n");
 		pl = min;
 		while (pl) {
@@ -675,10 +675,10 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 		}
 		fprintf(stderr, "containing %lu duplicate objects "
 				"with a total size of %lukb.\n",
-			(unsigned long)get_pack_redundancy(min),
-			(unsigned long)pack_set_bytecount(min)/1024);
+			xulong_t(get_pack_redundancy(min)),
+			xulong_t(pack_set_bytecount(min)/1024));
 		fprintf(stderr, "A total of %lu unique objects were considered.\n",
-			(unsigned long)all_objects->size);
+			xulong_t(all_objects->size));
 		fprintf(stderr, "Redundant packs (with indexes):\n");
 	}
 	pl = red = pack_list_difference(local_packs, min);
@@ -690,7 +690,7 @@ int cmd_pack_redundant(int argc, const char **argv, const char *prefix)
 	}
 	if (verbose)
 		fprintf(stderr, "%luMB of redundant packs in total.\n",
-			(unsigned long)pack_set_bytecount(red)/(1024*1024));
+			xulong_t(pack_set_bytecount(red)/(1024*1024)));
 
 	return 0;
 }

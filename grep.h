@@ -152,7 +152,7 @@ extern void append_grep_pattern(struct grep_opt *opt, const char *pat, const cha
 extern void append_header_grep_pattern(struct grep_opt *, enum grep_header_field, const char *);
 extern void compile_grep_patterns(struct grep_opt *opt);
 extern void free_grep_patterns(struct grep_opt *opt);
-extern int grep_buffer(struct grep_opt *opt, char *buf, unsigned long size);
+extern int grep_buffer(struct grep_opt *opt, char *buf, size_t size);
 
 struct grep_source {
 	char *name;
@@ -166,7 +166,7 @@ struct grep_source {
 	void *identifier;
 
 	char *buf;
-	unsigned long size;
+	size_t size;
 
 	char *path; /* for attribute lookups */
 	struct userdiff_driver *driver;

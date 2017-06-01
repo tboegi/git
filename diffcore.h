@@ -29,7 +29,7 @@ struct diff_filespec {
 	char *path;
 	void *data;
 	void *cnt_data;
-	unsigned long size;
+	size_t size;
 	int count;               /* Reference count */
 	int rename_used;         /* Count of rename users */
 	unsigned short mode;	 /* file mode */
@@ -142,7 +142,7 @@ extern int diffcore_count_changes(struct diff_filespec *src,
 				  struct diff_filespec *dst,
 				  void **src_count_p,
 				  void **dst_count_p,
-				  unsigned long *src_copied,
-				  unsigned long *literal_added);
+				  size_t *src_copied,
+				  size_t *literal_added);
 
 #endif

@@ -124,10 +124,10 @@ enum http_follow_config http_follow_config = HTTP_FOLLOW_INITIAL;
 static struct credential cert_auth = CREDENTIAL_INIT;
 static int ssl_cert_password_required;
 #ifdef LIBCURL_CAN_HANDLE_AUTH_ANY
-static unsigned long http_auth_methods = CURLAUTH_ANY;
+static size_t http_auth_methods = CURLAUTH_ANY;
 static int http_auth_methods_restricted;
 /* Modes for which empty_auth cannot actually help us. */
-static unsigned long empty_auth_useless =
+static size_t empty_auth_useless =
 	CURLAUTH_BASIC
 #ifdef CURLAUTH_DIGEST_IE
 	| CURLAUTH_DIGEST_IE

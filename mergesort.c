@@ -3,10 +3,10 @@
 
 struct mergesort_sublist {
 	void *ptr;
-	unsigned long len;
+	size_t len;
 };
 
-static void *get_nth_next(void *list, unsigned long n,
+static void *get_nth_next(void *list, size_t n,
 			  void *(*get_next_fn)(const void *))
 {
 	while (n-- && list)
@@ -28,7 +28,7 @@ void *llist_mergesort(void *list,
 		      void (*set_next_fn)(void *, void *),
 		      int (*compare_fn)(const void *, const void *))
 {
-	unsigned long l;
+	size_t l;
 
 	if (!list)
 		return NULL;

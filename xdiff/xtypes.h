@@ -42,7 +42,7 @@ typedef struct s_xrecord {
 	struct s_xrecord *next;
 	char const *ptr;
 	long size;
-	unsigned long ha;
+	size_t ha;
 } xrecord_t;
 
 typedef struct s_xdfile {
@@ -55,7 +55,7 @@ typedef struct s_xdfile {
 	char *rchg;
 	long *rindex;
 	long nreff;
-	unsigned long *ha;
+	size_t *ha;
 } xdfile_t;
 
 typedef struct s_xdfenv {

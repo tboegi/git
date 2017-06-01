@@ -12,7 +12,7 @@
 
 struct connectivity_progress {
 	struct progress *progress;
-	unsigned long count;
+	size_t count;
 };
 
 static void update_progress(struct connectivity_progress *cp)

@@ -378,7 +378,7 @@ static int fsck_obj(struct object *obj)
 }
 
 static int fsck_obj_buffer(const struct object_id *oid, enum object_type type,
-			   unsigned long size, void *buffer, int *eaten)
+			   size_t size, void *buffer, int *eaten)
 {
 	/*
 	 * Note, buffer may be NULL if type is OBJ_BLOB. See
@@ -497,7 +497,7 @@ static struct object *parse_loose_object(const struct object_id *oid,
 	struct object *obj;
 	void *contents;
 	enum object_type type;
-	unsigned long size;
+	size_t size;
 	int eaten;
 
 	if (read_loose_object(path, oid->hash, &type, &size, &contents) < 0)

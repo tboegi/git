@@ -5,7 +5,7 @@ static char *create_temp_file(unsigned char *sha1)
 	static char path[50];
 	void *buf;
 	enum object_type type;
-	unsigned long size;
+	size_t size;
 	int fd;
 
 	buf = read_sha1_file(sha1, &type, &size);

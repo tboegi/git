@@ -171,7 +171,7 @@ static int ce_compare_link(const struct cache_entry *ce, size_t expected_size)
 {
 	int match = -1;
 	void *buffer;
-	unsigned long size;
+	size_t size;
 	enum object_type type;
 	struct strbuf sb = STRBUF_INIT;
 
@@ -1509,7 +1509,7 @@ struct ondisk_cache_entry_extended {
 /* Allow fsck to force verification of the index checksum. */
 int verify_index_checksum;
 
-static int verify_hdr(struct cache_header *hdr, unsigned long size)
+static int verify_hdr(struct cache_header *hdr, size_t size)
 {
 	git_SHA_CTX c;
 	unsigned char sha1[20];
@@ -1533,7 +1533,7 @@ static int verify_hdr(struct cache_header *hdr, unsigned long size)
 }
 
 static int read_index_extension(struct index_state *istate,
-				const char *ext, void *data, unsigned long sz)
+				const char *ext, void *data, size_t sz)
 {
 	switch (CACHE_EXT(ext)) {
 	case CACHE_EXT_TREE:
@@ -1602,7 +1602,7 @@ static struct cache_entry *cache_entry_from_ondisk(struct ondisk_cache_entry *on
  * number of bytes to be stripped from the end of the previous name,
  * and the bytes to append to the result, to come up with its name.
  */
-static unsigned long expand_name_field(struct strbuf *name, const char *cp_)
+static size_t expand_name_field(struct strbuf *name, const char *cp_)
 {
 	const unsigned char *ep, *cp = (const unsigned char *)cp_;
 	size_t len = decode_varint(&cp);
@@ -1617,7 +1617,7 @@ static unsigned long expand_name_field(struct strbuf *name, const char *cp_)
 }
 
 static struct cache_entry *create_from_disk(struct ondisk_cache_entry *ondisk,
-					    unsigned long *ent_size,
+					    size_t *ent_size,
 					    struct strbuf *previous_name)
 {
 	struct cache_entry *ce;
@@ -1651,7 +1651,7 @@ static struct cache_entry *create_from_disk(struct ondisk_cache_entry *ondisk,
 
 		*ent_size = ondisk_ce_size(ce);
 	} else {
-		unsigned long consumed;
+		size_t consumed;
 		consumed = expand_name_field(previous_name, name);
 		ce = cache_entry_from_ondisk(ondisk, flags,
 					     previous_name->buf,
@@ -1728,7 +1728,7 @@ int do_read_index(struct index_state *istate, const char *path, int must_exist)
 {
 	int fd, i;
 	struct stat st;
-	unsigned long src_offset;
+	size_t src_offset;
 	struct cache_header *hdr;
 	void *mmap;
 	size_t mmap_size;
@@ -1778,7 +1778,7 @@ int do_read_index(struct index_state *istate, const char *path, int must_exist)
 	for (i = 0; i < istate->cache_nr; i++) {
 		struct ondisk_cache_entry *disk_ce;
 		struct cache_entry *ce;
-		unsigned long consumed;
+		size_t consumed;
 
 		disk_ce = (struct ondisk_cache_entry *)((char *)mmap + src_offset);
 		ce = create_from_disk(disk_ce, &consumed, previous_name);
@@ -1909,7 +1909,7 @@ int unmerged_index(const struct index_state *istate)
 
 #define WRITE_BUFFER_SIZE 8192
 static unsigned char write_buffer[WRITE_BUFFER_SIZE];
-static unsigned long write_buffer_len;
+static size_t write_buffer_len;
 
 static int ce_write_flush(git_SHA_CTX *context, int fd)
 {
@@ -2344,9 +2344,9 @@ static int write_split_index(struct index_state *istate,
 
 static const char *shared_index_expire = "2.weeks.ago";
 
-static unsigned long get_shared_index_expire_date(void)
+static size_t get_shared_index_expire_date(void)
 {
-	static unsigned long shared_index_expire_date;
+	static size_t shared_index_expire_date;
 	static int shared_index_expire_date_prepared;
 
 	if (!shared_index_expire_date_prepared) {
@@ -2362,7 +2362,7 @@ static unsigned long get_shared_index_expire_date(void)
 static int should_delete_shared_index(const char *shared_index_path)
 {
 	struct stat st;
-	unsigned long expiration;
+	size_t expiration;
 
 	/* Check timestamp */
 	expiration = get_shared_index_expire_date();
@@ -2562,10 +2562,10 @@ int index_name_is_other(const struct index_state *istate, const char *name,
 }
 
 void *read_blob_data_from_index(const struct index_state *istate,
-				const char *path, unsigned long *size)
+				const char *path, size_t *size)
 {
 	int pos, len;
-	unsigned long sz;
+	size_t sz;
 	enum object_type type;
 	void *data;
 

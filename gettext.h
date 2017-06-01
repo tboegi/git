@@ -55,7 +55,7 @@ static inline FORMAT_PRESERVING(1) const char *_(const char *msgid)
 }
 
 static inline FORMAT_PRESERVING(1) FORMAT_PRESERVING(2)
-const char *Q_(const char *msgid, const char *plu, unsigned long n)
+const char *Q_(const char *msgid, const char *plu, size_t n)
 {
 	if (use_gettext_poison())
 		return "# GETTEXT POISON #";

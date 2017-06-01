@@ -481,7 +481,7 @@ static void read_index_info(int nul_term_line)
 		char *path_name;
 		struct object_id oid;
 		unsigned int mode;
-		unsigned long ul;
+		size_t ul;
 		int stage;
 
 		/* This reads lines formatted in one of three formats:
@@ -803,7 +803,7 @@ static int parse_new_style_cacheinfo(const char *arg,
 				     struct object_id *oid,
 				     const char **path)
 {
-	unsigned long ul;
+	size_t ul;
 	char *endp;
 
 	if (!arg)

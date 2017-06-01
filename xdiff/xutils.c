@@ -226,9 +226,9 @@ int xdl_recmatch(const char *l1, long s1, const char *l2, long s2, long flags)
 	return 1;
 }
 
-static unsigned long xdl_hash_record_with_whitespace(char const **data,
+static size_t xdl_hash_record_with_whitespace(char const **data,
 		char const *top, long flags) {
-	unsigned long ha = 5381;
+	size_t ha = 5381;
 	char const *ptr = *data;
 
 	for (; ptr < top && *ptr != '\n'; ptr++) {
@@ -244,28 +244,28 @@ static unsigned long xdl_hash_record_with_whitespace(char const **data,
 			else if (flags & XDF_IGNORE_WHITESPACE_CHANGE
 				 && !at_eol) {
 				ha += (ha << 5);
-				ha ^= (unsigned long) ' ';
+				ha ^= (size_t) ' ';
 			}
 			else if (flags & XDF_IGNORE_WHITESPACE_AT_EOL
 				 && !at_eol) {
 				while (ptr2 != ptr + 1) {
 					ha += (ha << 5);
-					ha ^= (unsigned long) *ptr2;
+					ha ^= (size_t) *ptr2;
 					ptr2++;
 				}
 			}
 			continue;
 		}
 		ha += (ha << 5);
-		ha ^= (unsigned long) *ptr;
+		ha ^= (size_t) *ptr;
 	}
 	*data = ptr < top ? ptr + 1: ptr;
 
 	return ha;
 }
 
-unsigned long xdl_hash_record(char const **data, char const *top, long flags) {
-	unsigned long ha = 5381;
+size_t xdl_hash_record(char const **data, char const *top, long flags) {
+	size_t ha = 5381;
 	char const *ptr = *data;
 
 	if (flags & XDF_WHITESPACE_FLAGS)
@@ -273,7 +273,7 @@ unsigned long xdl_hash_record(char const **data, char const *top, long flags) {
 
 	for (; ptr < top && *ptr != '\n'; ptr++) {
 		ha += (ha << 5);
-		ha ^= (unsigned long) *ptr;
+		ha ^= (size_t) *ptr;
 	}
 	*data = ptr < top ? ptr + 1: ptr;
 

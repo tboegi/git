@@ -13,7 +13,7 @@ static const char content_type[] = "Content-Type";
 static const char content_length[] = "Content-Length";
 static const char last_modified[] = "Last-Modified";
 static int getanyfile = 1;
-static unsigned long max_request_buffer = 10 * 1024 * 1024;
+static size_t max_request_buffer = 10 * 1024 * 1024;
 
 static struct string_list *query_params;
 
@@ -307,7 +307,7 @@ static ssize_t read_request(int fd, unsigned char **out)
 		if (alloc == max_request_buffer)
 			die("request was larger than our maximum size (%lu);"
 			    " try setting GIT_HTTP_MAX_REQUEST_BUFFER",
-			    max_request_buffer);
+			    xulong_t(max_request_buffer));
 
 		alloc = alloc_nr(alloc);
 		if (alloc > max_request_buffer)
@@ -322,7 +322,7 @@ static void inflate_request(const char *prog_name, int out, int buffer_input)
 	unsigned char *full_request = NULL;
 	unsigned char in_buf[8192];
 	unsigned char out_buf[8192];
-	unsigned long cnt = 0;
+	size_t cnt = 0;
 
 	memset(&stream, 0, sizeof(stream));
 	git_inflate_init_gzip_only(&stream);

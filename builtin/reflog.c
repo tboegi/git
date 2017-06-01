@@ -34,7 +34,7 @@ struct expire_reflog_policy_cb {
 		UE_HEAD
 	} unreachable_expire_kind;
 	struct commit_list *mark_list;
-	unsigned long mark_limit;
+	size_t mark_limit;
 	struct cmd_reflog_expire_cb cmd;
 	struct commit *tip_commit;
 	struct commit_list *tips;
@@ -72,7 +72,7 @@ static int tree_is_complete(const struct object_id *oid)
 
 	if (!tree->buffer) {
 		enum object_type type;
-		unsigned long size;
+		size_t size;
 		void *data = read_sha1_file(oid->hash, &type, &size);
 		if (!data) {
 			tree->object.flags |= INCOMPLETE;

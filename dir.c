@@ -172,7 +172,7 @@ static size_t common_prefix_len(const struct pathspec *pathspec)
  */
 char *common_prefix(const struct pathspec *pathspec)
 {
-	unsigned long len = common_prefix_len(pathspec);
+	size_t len = common_prefix_len(pathspec);
 
 	return len ? xmemdupz(pathspec->items[0].match, len) : NULL;
 }
@@ -597,7 +597,7 @@ static void *read_skip_worktree_file_from_index(const struct index_state *istate
 						struct sha1_stat *sha1_stat)
 {
 	int pos, len;
-	unsigned long sz;
+	size_t sz;
 	enum object_type type;
 	void *data;
 
@@ -2631,7 +2631,7 @@ static void load_sha1_stat(struct sha1_stat *sha1_stat,
 	sha1_stat->valid = 1;
 }
 
-struct untracked_cache *read_untracked_extension(const void *data, unsigned long sz)
+struct untracked_cache *read_untracked_extension(const void *data, size_t sz)
 {
 	const struct ondisk_untracked_cache *ouc;
 	struct untracked_cache *uc;

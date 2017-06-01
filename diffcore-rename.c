@@ -144,7 +144,7 @@ static int estimate_similarity(struct diff_filespec *src,
 	 * match than anything else; the destination does not even
 	 * call into this function in that case.
 	 */
-	unsigned long max_size, delta_size, base_size, src_copied, literal_added;
+	size_t max_size, delta_size, base_size, src_copied, literal_added;
 	int score;
 
 	/* We deal only with regular files.  Symlink renames are handled

@@ -849,9 +849,9 @@ void free_grep_patterns(struct grep_opt *opt)
 	free_pattern_expr(opt->pattern_expression);
 }
 
-static char *end_of_line(char *cp, unsigned long *left)
+static char *end_of_line(char *cp, size_t *left)
 {
-	unsigned long l = *left;
+	size_t l = *left;
 	while (l && *cp != '\n') {
 		l--;
 		cp++;
@@ -1346,7 +1346,7 @@ static int should_lookahead(struct grep_opt *opt)
 }
 
 static int look_ahead(struct grep_opt *opt,
-		      unsigned long *left_p,
+		      size_t *left_p,
 		      unsigned *lno_p,
 		      char **bol_p)
 {
@@ -1449,7 +1449,7 @@ static int grep_source_1(struct grep_opt *opt, struct grep_source *gs, int colle
 {
 	char *bol;
 	char *peek_bol = NULL;
-	unsigned long left;
+	size_t left;
 	unsigned lno = 1;
 	unsigned last_hit = 0;
 	int binary_match_only = 0;
@@ -1594,7 +1594,7 @@ static int grep_source_1(struct grep_opt *opt, struct grep_source *gs, int colle
 			goto next_line;
 		}
 		if (show_function && (!peek_bol || peek_bol < bol)) {
-			unsigned long peek_left = left;
+			size_t peek_left = left;
 			char *peek_eol = eol;
 
 			/*
@@ -1707,7 +1707,7 @@ int grep_source(struct grep_opt *opt, struct grep_source *gs)
 	return grep_source_1(opt, gs, 0);
 }
 
-int grep_buffer(struct grep_opt *opt, char *buf, unsigned long size)
+int grep_buffer(struct grep_opt *opt, char *buf, size_t size)
 {
 	struct grep_source gs;
 	int r;

@@ -157,7 +157,7 @@ int textconv_object(const char *path,
 		    const struct object_id *oid,
 		    int oid_valid,
 		    char **buf,
-		    unsigned long *buf_size)
+		    size_t *buf_size)
 {
 	struct diff_filespec *df;
 	struct userdiff_driver *textconv;
@@ -184,7 +184,7 @@ static void fill_origin_blob(struct diff_options *opt,
 {
 	if (!o->file.ptr) {
 		enum object_type type;
-		unsigned long file_size;
+		size_t file_size;
 
 		num_read_blob++;
 		if (DIFF_OPT_TST(opt, ALLOW_TEXTCONV) &&
@@ -396,7 +396,7 @@ struct scoreboard {
 	 * indexed with scoreboard.lineno[blame_entry.lno].
 	 */
 	const char *final_buf;
-	unsigned long final_buf_size;
+	size_t final_buf_size;
 
 	/* linked list of blames */
 	struct blame_entry *ent;
@@ -2043,7 +2043,7 @@ static const char *get_next_line(const char *start, const char *end)
 static int prepare_lines(struct scoreboard *sb)
 {
 	const char *buf = sb->final_buf;
-	unsigned long len = sb->final_buf_size;
+	size_t len = sb->final_buf_size;
 	const char *end = buf + len;
 	const char *p;
 	int *lineno;
@@ -2180,7 +2180,7 @@ static void sanity_check_refcnt(struct scoreboard *sb)
 static unsigned parse_score(const char *arg)
 {
 	char *end;
-	unsigned long score = strtoul(arg, &end, 10);
+	size_t score = strtoul(arg, &end, 10);
 	if (*end)
 		return 0;
 	return score;
@@ -2347,7 +2347,7 @@ static struct commit *fake_working_tree_commit(struct diff_options *opt,
 		struct stat st;
 		const char *read_from;
 		char *buf_ptr;
-		unsigned long buf_len;
+		size_t buf_len;
 
 		if (contents_from) {
 			if (stat(contents_from, &st) < 0)

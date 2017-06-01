@@ -41,7 +41,7 @@ struct pollfd
   short revents;                /* events found on return        */
 };
 
-typedef unsigned long nfds_t;
+typedef size_t nfds_t;
 
 extern int poll (struct pollfd *pfd, nfds_t nfd, int timeout);
 

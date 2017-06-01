@@ -1222,7 +1222,7 @@ int cmd_main(int argc, const char **argv)
 		}
 		if (skip_prefix(arg, "--port=", &v)) {
 			char *end;
-			unsigned long n;
+			size_t n;
 			n = strtoul(v, &end, 0);
 			if (*v && !*end) {
 				listen_port = n;
