@@ -8,11 +8,12 @@
 
 struct index_state;
 
-#define SAFE_CRLF_FALSE       0
-#define SAFE_CRLF_FAIL        (1<<0)
-#define SAFE_CRLF_WARN        (1<<1)
-#define SAFE_CRLF_RENORMALIZE (1<<2)
-#define SAFE_CRLF_KEEP_CRLF   (1<<3)
+#define SAFE_CRLF_FALSE        0
+#define SAFE_CRLF_FAIL         (1<<0)
+#define SAFE_CRLF_WARN         (1<<1)
+#define SAFE_CRLF_RENORMALIZE  (1<<2)
+#define SAFE_CRLF_KEEP_CRLF    (1<<3)
+#define SAFE_CRLF_DIE_ON_ERROR (1<<4)
 
 extern int safe_crlf;
 

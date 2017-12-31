@@ -138,7 +138,7 @@ static int get_checksafe(unsigned flags)
 	if (flags & HASH_RENORMALIZE)
 		return SAFE_CRLF_RENORMALIZE;
 	else if (flags & HASH_WRITE_OBJECT)
-		return safe_crlf;
+		return safe_crlf | SAFE_CRLF_DIE_ON_ERROR;
 	else
 		return SAFE_CRLF_FALSE;
 }
