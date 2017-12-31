@@ -3524,7 +3524,7 @@ int diff_populate_filespec(struct diff_filespec *s, unsigned int flags)
 	 * demote FAIL to WARN to allow inspecting the situation
 	 * instead of refusing.
 	 */
-	enum safe_crlf crlf_warn = (safe_crlf == SAFE_CRLF_FAIL
+	int checksafe = (safe_crlf == SAFE_CRLF_FAIL
 				    ? SAFE_CRLF_WARN
 				    : safe_crlf);
 
@@ -3603,7 +3603,7 @@ int diff_populate_filespec(struct diff_filespec *s, unsigned int flags)
 		/*
 		 * Convert from working tree format to canonical git format
 		 */
-		if (convert_to_git(&the_index, s->path, s->data, s->size, &buf, crlf_warn)) {
+		if (convert_to_git(&the_index, s->path, s->data, s->size, &buf, checksafe)) {
 			size_t size = 0;
 			munmap(s->data, s->size);
 			s->should_munmap = 0;
