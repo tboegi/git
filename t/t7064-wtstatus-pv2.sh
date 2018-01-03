@@ -410,6 +410,10 @@ test_expect_success 'verify --[no-]ahead-behind with V2 format' '
 		git status --no-ahead-behind --porcelain=v2 --branch --untracked-files=all >actual &&
 		test_cmp expect actual &&
 
+		# Confirm that porcelain=v2 format inherits status.aheadBehind value when _QUICK2.
+		git -c status.aheadbehind=2 status --porcelain=v2 --branch --untracked-files=all >actual &&
+		test_cmp expect actual &&
+
 		# Confirm --ahead-behind reports traditional branch.ab with 0/0.
 		cat >expect <<-EOF &&
 		# branch.oid $HUF
@@ -421,7 +425,7 @@ test_expect_success 'verify --[no-]ahead-behind with V2 format' '
 		git status --ahead-behind --porcelain=v2 --branch --untracked-files=all >actual &&
 		test_cmp expect actual &&
 
-		# Confirm that porcelain=v2 format does not inherit status.aheadBehind value.
+		# Confirm that porcelain=v2 format does not inherit status.aheadBehind value when _FULL/_QUICK.
 		git -c status.aheadbehind=false status --porcelain=v2 --branch --untracked-files=all >actual &&
 		test_cmp expect actual &&
 

@@ -264,6 +264,14 @@ enum ahead_behind_flags {
 	AHEAD_BEHIND_FULL        =  1,  /* traditional a/b reporting */
 };
 
+/* Flags for status.aheadBehind values. */
+enum ahead_behind_config_flags {
+	AHEAD_BEHIND_CONFIG_UNSPECIFIED = -1,
+	AHEAD_BEHIND_CONFIG_QUICK       =  0, /* eq/neq for non-porcelain only */
+	AHEAD_BEHIND_CONFIG_FULL        =  1, /* a/b reporting for all formats */
+	AHEAD_BEHIND_CONFIG_QUICK2      =  2, /* eq/neq for all formats */
+};
+
 /* Reporting of tracking info */
 int stat_tracking_info(struct branch *branch, int *num_ours, int *num_theirs,
 		       const char **upstream_name, enum ahead_behind_flags abf);

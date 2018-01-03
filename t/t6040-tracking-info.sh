@@ -219,6 +219,15 @@ test_expect_success 'status.aheadbehind=false status --long --branch' '
 	test_i18ncmp expect actual
 '
 
+test_expect_success 'status.aheadbehind=2 status --long --branch' '
+	(
+		cd test &&
+		git checkout b1 >/dev/null &&
+		git -c status.aheadbehind=false status --long -b | head -2
+	) >actual &&
+	test_i18ncmp expect actual
+'
+
 cat >expect <<\EOF
 ## b5...brokenbase [gone]
 EOF
