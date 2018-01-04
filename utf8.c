@@ -544,10 +544,10 @@ static int has_bom_prefix(const char *data, size_t len,
 	return (len >= bom_len) && !memcmp(data, bom, bom_len);
 }
 
-const char utf16_be_bom[] = {0xFE, 0xFF};
-const char utf16_le_bom[] = {0xFF, 0xFE};
-const char utf32_be_bom[] = {0x00, 0x00, 0xFE, 0xFF};
-const char utf32_le_bom[] = {0xFF, 0xFE, 0x00, 0x00};
+static const char utf16_be_bom[] = {0xFE, 0xFF};
+static const char utf16_le_bom[] = {0xFF, 0xFE};
+static const char utf32_be_bom[] = {0x00, 0x00, 0xFE, 0xFF};
+static const char utf32_le_bom[] = {0xFF, 0xFE, 0x00, 0x00};
 
 int has_prohibited_utf_bom(const char *enc, const char *data, size_t len)
 {
