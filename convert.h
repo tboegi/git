@@ -8,15 +8,14 @@
 
 struct index_state;
 
-enum safe_crlf {
-	SAFE_CRLF_FALSE = 0,
-	SAFE_CRLF_FAIL = 1,
-	SAFE_CRLF_WARN = 2,
-	SAFE_CRLF_RENORMALIZE = 3,
-	SAFE_CRLF_KEEP_CRLF = 4
-};
+#define SAFE_CRLF_FALSE        0
+#define SAFE_CRLF_FAIL         (1<<0)
+#define SAFE_CRLF_WARN         (1<<1)
+#define SAFE_CRLF_RENORMALIZE  (1<<2)
+#define SAFE_CRLF_KEEP_CRLF    (1<<3)
+#define SAFE_CRLF_DIE_ON_ERROR (1<<4)
 
-extern enum safe_crlf safe_crlf;
+extern int safe_crlf;
 
 enum auto_crlf {
 	AUTO_CRLF_FALSE = 0,
@@ -66,7 +65,7 @@ extern const char *get_convert_attr_ascii(const char *path);
 /* returns 1 if *dst was used */
 extern int convert_to_git(const struct index_state *istate,
 			  const char *path, const char *src, size_t len,
-			  struct strbuf *dst, enum safe_crlf checksafe);
+			  struct strbuf *dst, int checksafe);
 extern int convert_to_working_tree(const char *path, const char *src,
 				   size_t len, struct strbuf *dst);
 extern int async_convert_to_working_tree(const char *path, const char *src,
@@ -85,7 +84,7 @@ static inline int would_convert_to_git(const struct index_state *istate,
 extern void convert_to_git_filter_fd(const struct index_state *istate,
 				     const char *path, int fd,
 				     struct strbuf *dst,
-				     enum safe_crlf checksafe);
+				     int checksafe);
 extern int would_convert_to_git_filter_fd(const char *path);
 
 /*****************************************************************
