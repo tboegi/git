@@ -1035,10 +1035,31 @@ static const char *read_commit_message(const char *name)
 static struct status_deferred_config {
 	enum wt_status_format status_format;
 	int show_branch;
+	enum ahead_behind_config_flags ahead_behind_config;
 } status_deferred_config = {
 	STATUS_FORMAT_UNSPECIFIED,
-	-1 /* unspecified */
+	-1, /* unspecified */
+	AHEAD_BEHIND_UNSPECIFIED,
 };
+
+static inline enum ahead_behind_flags inherit_deferred_ab_flags(
+	int is_porcelain)
+{
+	switch (status_deferred_config.ahead_behind_config) {
+	case AHEAD_BEHIND_CONFIG_UNSPECIFIED:
+	case AHEAD_BEHIND_CONFIG_FULL:
+		return AHEAD_BEHIND_FULL;
+
+	case AHEAD_BEHIND_CONFIG_QUICK2:
+		return AHEAD_BEHIND_QUICK;
+
+	case AHEAD_BEHIND_CONFIG_QUICK:
+		return is_porcelain ? AHEAD_BEHIND_FULL : AHEAD_BEHIND_QUICK;
+
+	default: /* don't complain about bogus config settings */
+		return AHEAD_BEHIND_FULL;
+	}
+}
 
 static void finalize_deferred_config(struct wt_status *s)
 {
@@ -1063,6 +1084,10 @@ static void finalize_deferred_config(struct wt_status *s)
 		s->show_branch = status_deferred_config.show_branch;
 	if (s->show_branch < 0)
 		s->show_branch = 0;
+
+	if (s->ahead_behind_flags == AHEAD_BEHIND_UNSPECIFIED)
+		s->ahead_behind_flags =
+			inherit_deferred_ab_flags(!use_deferred_config);
 }
 
 static int parse_and_validate_options(int argc, const char *argv[],
@@ -1225,6 +1250,12 @@ static int git_status_config(const char *k, const char *v, void *cb)
 		status_deferred_config.show_branch = git_config_bool(k, v);
 		return 0;
 	}
+	if (!strcmp(k, "status.aheadbehind")) {
+		int is_bool;
+		status_deferred_config.ahead_behind_config =
+			git_config_bool_or_int(k, v, &is_bool);
+		return 0;
+	}
 	if (!strcmp(k, "status.showstash")) {
 		s->show_stash = git_config_bool(k, v);
 		return 0;
@@ -1279,6 +1310,8 @@ int cmd_status(int argc, const char **argv, const char *prefix)
 			 N_("show branch information")),
 		OPT_BOOL(0, "show-stash", &s.show_stash,
 			 N_("show stash information")),
+		OPT_BOOL(0, "ahead-behind", &s.ahead_behind_flags,
+			 N_("compute full ahead/behind values")),
 		{ OPTION_CALLBACK, 0, "porcelain", &status_format,
 		  N_("version"), N_("machine-readable output"),
 		  PARSE_OPT_OPTARG, opt_parse_porcelain },
@@ -1439,6 +1472,8 @@ int cmd_commit(int argc, const char **argv, const char *prefix)
 		OPT_SET_INT(0, "short", &status_format, N_("show status concisely"),
 			    STATUS_FORMAT_SHORT),
 		OPT_BOOL(0, "branch", &s.show_branch, N_("show branch information")),
+		OPT_BOOL(0, "ahead-behind", &s.ahead_behind_flags,
+			 N_("compute full ahead/behind values")),
 		OPT_SET_INT(0, "porcelain", &status_format,
 			    N_("machine-readable output"), STATUS_FORMAT_PORCELAIN),
 		OPT_SET_INT(0, "long", &status_format,

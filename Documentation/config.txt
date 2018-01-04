@@ -3093,6 +3093,17 @@ status.branch::
 	Set to true to enable --branch by default in linkgit:git-status[1].
 	The option --no-branch takes precedence over this variable.
 
+status.aheadBehind::
+	Set to true to enable --ahead-behind and to false to enable
+	--no-ahead-behind by default in linkgit:git-status[1] for
+	non-porcelain formats.  This setting is ignored by porcelain
+	formats for backwards compatibility.
++
+(EXPERIMENTAL) Set to 2 to allow both porcelain and non-porcelain
+formats to inherit --no-ahead-behind.  This may break backward
+compatibility for scripts using porcelain status formats and expecting
+ahead/behind information in the output.
+
 status.displayCommentPrefix::
 	If set to true, linkgit:git-status[1] will insert a comment
 	prefix before each output line (starting with
