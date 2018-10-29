@@ -3096,7 +3096,7 @@ static int apply_binary_fragment(struct apply_state *state,
 				 struct patch *patch)
 {
 	struct fragment *fragment = patch->fragments;
-	unsigned long len;
+	size_t len;
 	void *dst;
 
 	if (!fragment)
@@ -3186,7 +3186,7 @@ static int apply_binary(struct apply_state *state,
 	if (repo_has_sha1_file(the_repository, oid.hash)) {
 		/* We already have the postimage */
 		enum object_type type;
-		unsigned long size;
+		size_t size;
 		char *result;
 
 		result = repo_read_object_file(the_repository, &oid, &type,
@@ -3249,7 +3249,7 @@ static int read_blob_object(struct strbuf *buf, const struct object_id *oid, uns
 		strbuf_addf(buf, "Subproject commit %s\n", oid_to_hex(oid));
 	} else {
 		enum object_type type;
-		unsigned long sz;
+		size_t sz;
 		char *result;
 
 		result = repo_read_object_file(the_repository, oid, &type,
@@ -4278,7 +4278,7 @@ static int add_index_file(struct apply_state *state,
 			  const char *path,
 			  unsigned mode,
 			  void *buf,
-			  unsigned long size)
+			  size_t size)
 {
 	struct stat st;
 	struct cache_entry *ce;
@@ -4332,7 +4332,7 @@ static int add_index_file(struct apply_state *state,
  */
 static int try_create_file(struct apply_state *state, const char *path,
 			   unsigned int mode, const char *buf,
-			   unsigned long size)
+			   size_t size)
 {
 	int fd, res;
 	struct strbuf nbuf = STRBUF_INIT;
@@ -4383,7 +4383,7 @@ static int create_one_file(struct apply_state *state,
 			   char *path,
 			   unsigned mode,
 			   const char *buf,
-			   unsigned long size)
+			   size_t size)
 {
 	int res;
 
@@ -4475,7 +4475,7 @@ static int create_file(struct apply_state *state, struct patch *patch)
 {
 	char *path = patch->new_name;
 	unsigned mode = patch->new_mode;
-	unsigned long size = patch->resultsize;
+	size_t size = patch->resultsize;
 	char *buf = patch->result;
 
 	if (!mode)

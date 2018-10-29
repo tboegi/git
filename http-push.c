@@ -359,14 +359,14 @@ static void start_put(struct transfer_request *request)
 	enum object_type type;
 	char hdr[50];
 	void *unpacked;
-	unsigned long len;
+	size_t len;
 	int hdrlen;
 	ssize_t size;
 	git_zstream stream;
 
 	unpacked = repo_read_object_file(the_repository, &request->obj->oid,
 					 &type, &len);
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", type_name(type), len) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", type_name(type), xulong_t(len)) + 1;
 
 	/* Set it up */
 	git_deflate_init(&stream, zlib_compression_level);

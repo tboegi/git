@@ -494,7 +494,8 @@ static void fmt_merge_msg_sigs(struct strbuf *out)
 	for (i = 0; i < origins.nr; i++) {
 		struct object_id *oid = origins.items[i].util;
 		enum object_type type;
-		unsigned long size, len;
+		unsigned long len;
+		size_t size;
 		char *buf = repo_read_object_file(the_repository, oid, &type,
 						  &size);
 		struct strbuf sig = STRBUF_INIT;
