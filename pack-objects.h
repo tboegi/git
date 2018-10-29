@@ -323,9 +323,9 @@ static inline void oe_set_delta_sibling(struct packing_data *pack,
 		e->delta_sibling_idx = 0;
 }
 
-unsigned long oe_get_size_slow(struct packing_data *pack,
+size_t oe_get_size_slow(struct packing_data *pack,
 			       const struct object_entry *e);
-static inline unsigned long oe_size(struct packing_data *pack,
+static inline size_t oe_size(struct packing_data *pack,
 				    const struct object_entry *e)
 {
 	if (e->size_valid)
@@ -336,7 +336,7 @@ static inline unsigned long oe_size(struct packing_data *pack,
 
 static inline int oe_size_less_than(struct packing_data *pack,
 				    const struct object_entry *lhs,
-				    unsigned long rhs)
+				    size_t rhs)
 {
 	if (lhs->size_valid)
 		return lhs->size_ < rhs;
@@ -347,7 +347,7 @@ static inline int oe_size_less_than(struct packing_data *pack,
 
 static inline int oe_size_greater_than(struct packing_data *pack,
 				       const struct object_entry *lhs,
-				       unsigned long rhs)
+				       size_t rhs)
 {
 	if (lhs->size_valid)
 		return lhs->size_ > rhs;
@@ -358,7 +358,7 @@ static inline int oe_size_greater_than(struct packing_data *pack,
 
 static inline void oe_set_size(struct packing_data *pack,
 			       struct object_entry *e,
-			       unsigned long size)
+			       size_t size)
 {
 	if (size < pack->oe_size_limit) {
 		e->size_ = size;
@@ -370,7 +370,7 @@ static inline void oe_set_size(struct packing_data *pack,
 	}
 }
 
-static inline unsigned long oe_delta_size(struct packing_data *pack,
+static inline size_t oe_delta_size(struct packing_data *pack,
 					  const struct object_entry *e)
 {
 	if (e->delta_size_valid)
@@ -389,7 +389,7 @@ static inline unsigned long oe_delta_size(struct packing_data *pack,
 
 static inline void oe_set_delta_size(struct packing_data *pack,
 				     struct object_entry *e,
-				     unsigned long size)
+				     size_t size)
 {
 	if (size < pack->oe_delta_size_limit) {
 		e->delta_size_ = size;
