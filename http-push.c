@@ -366,7 +366,7 @@ static void start_put(struct transfer_request *request)
 
 	unpacked = repo_read_object_file(the_repository, &request->obj->oid,
 					 &type, &len);
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", type_name(type), xulong_t(len)) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %"PRIuMAX , type_name(type), (uintmax_t)len) + 1;
 
 	/* Set it up */
 	git_deflate_init(&stream, zlib_compression_level);

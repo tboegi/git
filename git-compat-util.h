@@ -939,15 +939,6 @@ static inline size_t xsize_t(off_t len)
 	return size;
 }
 
-static inline unsigned long xulong_t(size_t len)
-{
-	unsigned long size = (unsigned long)len;
-
-	if (len != (size_t) size)
-		die("Cannot print numbers this big");
-	return size;
-}
-
 __attribute__((format (printf, 3, 4)))
 extern int xsnprintf(char *dst, size_t max, const char *fmt, ...);
 

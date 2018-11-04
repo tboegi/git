@@ -901,7 +901,7 @@ int check_object_signature(const struct object_id *oid, void *map,
 		return -1;
 
 	/* Generate the header */
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", type_name(obj_type), xulong_t(size)) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %"PRIuMAX , type_name(obj_type), (uintmax_t)size) + 1;
 
 	/* Sha1.. */
 	the_hash_algo->init_fn(&c);
@@ -1564,7 +1564,7 @@ static void write_object_file_prepare(const void *buf, size_t len,
 	git_hash_ctx c;
 
 	/* Generate the header */
-	*hdrlen = xsnprintf(hdr, *hdrlen, "%s %lu", type, xulong_t(len))+1;
+	*hdrlen = xsnprintf(hdr, *hdrlen, "%s %"PRIuMAX , type, (uintmax_t)len+1);
 
 	/* Sha1.. */
 	the_hash_algo->init_fn(&c);
@@ -1830,7 +1830,7 @@ int force_object_loose(const struct object_id *oid, time_t mtime)
 	buf = read_object(the_repository, oid->hash, &type, &len);
 	if (!buf)
 		return error(_("cannot read sha1_file for %s"), oid_to_hex(oid));
-	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %lu", type_name(type), xulong_t(len)) + 1;
+	hdrlen = xsnprintf(hdr, sizeof(hdr), "%s %"PRIuMAX , type_name(type), (uintmax_t)len) + 1;
 	ret = write_loose_object(oid, hdr, hdrlen, buf, len, mtime);
 	free(buf);
 
