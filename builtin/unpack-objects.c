@@ -440,7 +440,7 @@ static void unpack_delta_entry(enum object_type type, size_t delta_size,
 
 static void unpack_one(unsigned nr)
 {
-	unsigned shift;
+	size_t shift;
 	unsigned char *pack;
 	size_t size, c;
 	enum object_type type;
