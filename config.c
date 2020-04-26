@@ -1132,7 +1132,18 @@ static int git_default_core_config(const char *var, const char *value, void *cb)
 {
 	/* This needs a better name */
 	if (!strcmp(var, "core.filemode")) {
+		if (auto_trust_executable_bit) {
+			trust_executable_bit = !bogus_executable_bit;
+			return 0;
+		}
 		trust_executable_bit = git_config_bool(var, value);
+		return 0;
+	}
+	if (!strcmp(var, "core.autofilemode")) {
+		auto_trust_executable_bit = git_config_bool(var, value);
+		/* core.autofilemode overrides core.filemode */
+		if (auto_trust_executable_bit)
+			trust_executable_bit = !bogus_executable_bit;
 		return 0;
 	}
 	if (!strcmp(var, "core.trustctime")) {
@@ -1704,9 +1715,14 @@ static int do_git_config_sequence(const struct config_options *opts,
 	char *repo_config;
 	enum config_scope prev_parsing_scope = current_parsing_scope;
 
-	if (opts->commondir)
+	if (opts->commondir) {
+		struct stat st;
 		repo_config = mkpathdup("%s/config", opts->commondir);
-	else if (opts->git_dir)
+		if (!lstat(opts->commondir, &st) && (!(st.st_mode & S_IXUSR)))
+			bogus_executable_bit = 1;
+		if (!lstat(repo_config, &st) && (st.st_mode & S_IXUSR))
+			bogus_executable_bit = 1;
+	} else if (opts->git_dir)
 		BUG("git_dir without commondir");
 	else
 		repo_config = NULL;

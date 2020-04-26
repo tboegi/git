@@ -15,10 +15,23 @@ when created, but later may be made accessible from another
 environment that loses the filemode (e.g. exporting ext4 via
 CIFS mount, visiting a Cygwin created repository with
 Git for Windows or Eclipse).
-In such a case it may be necessary to set this variable to 'false'.
+In such a case it may be necessary to set this variable to 'false'
+or set core.autofilemode=true,
 See linkgit:git-update-index[1].
 +
 The default is true (when core.filemode is not specified in the config file).
++
+core.autofileMode::
+	Tells Git to ignore the core.filemode setting
+	and do an auto probing instead. 
++
+A repository that is shared and used from Git implementations
+may need different core.filemode settings (true vs false) for
+the different Git clients.
+
+Setting core.autofilemode true disables core.filemode and enables
+an on the fly probing in the individual clients.
++
 
 core.hideDotFiles::
 	(Windows-only) If true, mark newly-created directories and files whose

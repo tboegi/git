@@ -18,7 +18,9 @@
 #include "object-store.h"
 #include "chdir-notify.h"
 
+int bogus_executable_bit = 0;
 int trust_executable_bit = 1;
+int auto_trust_executable_bit = 0;
 int trust_ctime = 1;
 int check_stat = 1;
 int has_symlinks = 1;
